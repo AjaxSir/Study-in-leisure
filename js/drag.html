@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .list{
+            width: 300px;
+            height: auto;
+        }
+        .list-item{
+            border-radius: 5px;
+            width: 300px;
+            height: 30px;
+            background: linear-gradient(to right, white, black);
+            /* background:black; */
+            /* background: radial-gradient(circle at 100%, red, blue 50%, yellow 75%, pink 75%); */
+            margin-top: 5px;
+            color: pink;
+            line-height: 30px;
+            box-sizing: border-box;
+            padding: 0 10px;
+            overflow: hidden;
+            /* border: dashed 1px transparent; */
+            box-shadow: 0 0 5px 5px gray;
+        }
+        .list-item:first-child{
+            margin-top: 0;
+        }
+        .list-item.moving{
+            border: dashed 1px gray;
+            background: transparent;
+            color: transparent;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="list">
+        <div draggable="true" class="list-item">1</div>
+        <div draggable="true" class="list-item">2</div>
+        <div draggable="true" class="list-item">3</div>
+        <div draggable="true" class="list-item">4</div>
+        <div draggable="true" class="list-item">5</div>
+    </div>
+</body>
+<script>
+    class Flip {
+        constructor(container) {
+            this.container = container
+            this.init()
+        }
+        init() {
+            for(let i = 0; i< this.container.children.length;i++) {
+                const dom = this.container.children[i]
+                dom._x = dom.getBoundingClientRect().left
+                dom._y = dom.getBoundingClientRect().top
+            }
+        }
+        play() {
+            for(let i = 0; i< this.container.children.length;i++) {
+                const dom = this.container.children[i]
+                dom.animate([
+                    {transform: `translate(${dom._x - dom.getBoundingClientRect().left}px, ${dom._y - dom.getBoundingClientRect().top }px)`},
+                    {transform: `translate(0, 0)`}
+                ],{
+                    duration: 100,
+                    easing: 'ease-in-out'
+                })
+            }
+        
+        }
+    }
+</script>
+<script>
+
+const list = document.querySelector('.list')
+let sourceNode = null
+let cont = null
+list.onclick = (e) => {
+    console.log(e)
+}
+list.ondragstart = (e) => {
+    console.log(e)
+    setTimeout(() => {
+        e.target.classList.add('moving')
+    }, 0)
+    e.dataTransfer.effectAllowed = 'move'
+    cont = new Flip(list)
+    sourceNode = e.target
+}
+list.ondragiver = (e) => {
+    e.preventDefault()
+} 
+list.ondragenter = (e) => {
+    e.preventDefault();
+    if (e.target == list || e.target == sourceNode) return
+    const childrens = [...list.children]
+    const sourceIndex = childrens.indexOf(sourceNode)
+    const currentIdx = childrens.indexOf(e.target)
+    if (sourceIndex > currentIdx) {
+        list.insertBefore(sourceNode, e.target)
+    } else {
+        list.insertBefore(sourceNode, e.target.nextElementSibling)
+    }
+    cont.play()
+} 
+list.ondragend = e => {
+    e.target.classList.remove('moving')
+    
+}
+</script>
+</html>

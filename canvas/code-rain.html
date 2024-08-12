@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+</body>
+<script>
+    const FONT_SIZE = 20 * devicePixelRatio;
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth * devicePixelRatio;
+    canvas.height = window.innerHeight * devicePixelRatio;
+
+    
+    var column =Math.floor(window.innerWidth / FONT_SIZE)
+
+    var nextChar = new Array(column).fill(0)
+    function draw() {
+        ctx.fillStyle = 'rgba(0,0,0, .1)'
+        ctx.fillRect(0,0,canvas.width, canvas.height )
+        for(let i = 0; i < nextChar.length; i++) {
+            ctx.fillStyle = getRandomColor()
+            var x = i * FONT_SIZE + 5
+            var y = nextChar[i + 1] * FONT_SIZE
+            ctx.fillText(getRadomWord(), x , y);
+            if (y > canvas.height && Math.random() > 0.99) {
+                nextChar[i] = 0
+            } else {
+                nextChar[i] += 1
+            }
+        }
+        requestAnimationFrame(draw)
+    }
+
+    requestAnimationFrame(draw)
+
+    function getRadomWord() {
+        const str = 'abcdefghijklmnopqrstuvwxyz';
+        return str[Math.floor(Math.random() * str.length)]
+    }
+    function getRandomColor() {
+        var str = '123456789abcdef';
+        var color = '#'
+        for(var i = 0; i < 6; i++) {
+            color+=str[Math.floor(Math.random() * str.length)]
+        }
+        return color;
+    }
+</script>
+</html>

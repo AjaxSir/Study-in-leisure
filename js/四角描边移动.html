@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background: black;
+        }
+        .main{
+            width: 40%;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: auto;
+            row-gap: 30px;
+            column-gap: 30px;
+            position: relative;
+            img{
+                width: 100%;
+            }
+            .pointer{
+                --border: 30px;
+                --gap: 5px;
+                --w: 100px;
+                --left:0px;
+                --border-width: 3px;
+                --top:0px;
+                left: 0;    
+                mask: conic-gradient(at var(--border) var(--border) , transparent  75%,  blue 75% 100%) 0 0 / calc(100% - var(--border)) calc(100% - var(--border));
+                display: none;
+                top: 0;
+                border: var(--border-width) solid white;
+                width: calc(var(--w) + 2 * var(--gap));
+                height: calc(var(--w) + 2 * var(--gap));
+                position: absolute;
+                transition: all .2s;
+                transform: translate(calc(var(--left) - var(--gap) - var(--border-width)), calc(var(--top) - var(--gap) - var(--border-width)));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="item"><img src="https://via.placeholder.com/200x200" alt=""></div>
+        <div class="item"><img src="https://via.placeholder.com/200x200" alt=""></div>
+        <div class="item"><img src="https://via.placeholder.com/200x200" alt=""></div>
+        <div class="item"><img src="https://via.placeholder.com/200x200" alt=""></div>
+        <div class="item"><img src="https://via.placeholder.com/200x200" alt=""></div>
+        <div class="item"><img src="https://via.placeholder.com/200x200" alt=""></div>
+        <div class="item"><img src="https://via.placeholder.com/200x200" alt=""></div>
+        <div class="item"><img src="https://via.placeholder.com/200x200" alt=""></div>
+        <div class="item"><img src="https://via.placeholder.com/200x200" alt=""></div>
+        <div class="pointer"></div>
+    </div>
+</body>
+<script>
+    const imgs = document.querySelectorAll('img')
+    const pointer = document.querySelector('.pointer')
+    const main = document.querySelector('.main')
+    const { offsetWidth } = document.querySelector('.item') 
+    main.addEventListener('mouseenter', () => {
+        pointer.style.display = 'block'
+    })
+    main.addEventListener('mouseleave', () => {
+        pointer.style.display = 'none'
+    })
+    pointer.style.setProperty('--w', offsetWidth + 'px');
+    for(let i = 0; i< imgs.length;i++) {
+        const img = imgs[i]
+        img.addEventListener('mouseenter', (e) => {
+            const { offsetLeft, offsetTop, offsetWidth, offsetHeight } = img 
+            console.log(offsetLeft, offsetTop,offsetWidth, offsetHeight)
+            pointer.style.setProperty('--left', offsetLeft + 'px');
+            pointer.style.setProperty('--top', offsetTop + 'px');
+            pointer.style.setProperty('--w', offsetWidth + 'px');
+        })
+    }
+
+</script>
+</html>

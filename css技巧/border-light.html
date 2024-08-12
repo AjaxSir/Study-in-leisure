@@ -1,0 +1,105 @@
+﻿<!--
+ * @Date: 2024-07-10 17:51:24
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2024-07-10 18:33:08
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body{
+            width: 100vw;
+            height: 100vh;
+            background-color: black;
+        }
+        .main{
+            display: flex;
+            flex-wrap: wrap;
+            /* background-color: gray */
+        }
+        .container{
+            width: 400px;
+            height: 200px;
+            position: relative;
+            border-radius: 8px;
+            background-color: rgba(255,255,255,.3);
+            margin-top: 5px;
+            margin-left: 5px;
+            z-index: 1;
+            overflow: hidden;
+            /* flex: 1; */
+            
+        }
+        .card{
+                position: absolute;
+                inset: 2px;
+                background-color: #222;
+                border-radius: inherit;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                z-index: 3;
+            }
+        .container::before{
+            content: '';
+            position: absolute;
+            z-index: 2;
+            inset: 0;
+            transform: translate(var(--x, -1000px), var(--y, -1000px));
+            /* background-color: transparent !important; */
+            background: radial-gradient(circle closest-side, white 0%, transparent 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="container">
+            <!-- <div class="card">masd</div> -->
+        </div>
+        <div class="container">
+            <div class="card">dasdasd</div>
+        </div>
+        <div class="container">
+            <div class="card">asdasd</div>
+        </div>
+        <div class="container">
+            <div class="card">asdasd</div>
+        </div>
+        <div class="container">
+            <div class="card">masd</div>
+        </div>
+        <div class="container">
+            <div class="card">dasdasd</div>
+        </div>
+        <div class="container">
+            <div class="card">asdasd</div>
+        </div>
+        <div class="container">
+            <div class="card">asdasd</div>
+        </div>
+    </div>
+   
+</body>
+<script>
+    const main =  document.querySelector('.main')
+    const container = document.querySelectorAll('.container')
+    main.addEventListener('mousemove', function(e){
+        for (let item of container) {
+            const positionInfo = item.getBoundingClientRect()
+            const x = e.clientX
+            const y = e.clientY
+            const distanceX = x - positionInfo.left - positionInfo.width / 2
+            const distanceY = y - positionInfo.top - positionInfo.height / 2
+            item.style.setProperty('--x', `${distanceX}px`)
+            item.style.setProperty('--y', `${distanceY}px`)
+        }
+    })
+
+</script>
+</html>

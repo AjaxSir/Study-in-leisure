@@ -1,0 +1,10 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+::placeholder{
+    background-color: #f40;
+}
+.container{
+    font-size: 12px;
+    text-align: center;
+}

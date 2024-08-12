@@ -1,0 +1,120 @@
+﻿<!--
+ * @Date: 2024-05-20 13:55:53
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2024-05-20 16:47:59
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .content{
+            width: 300px;
+            height: 200px;
+            position: relative;
+        }
+        .content img, .content #canvas{
+            position: absolute;
+            inset: 0;
+            width: 300px;
+            height: 200px;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <img src="https://picsum.photos/300/200" alt="">
+        <canvas id="canvas"></canvas>
+    </div>
+    
+</body>
+<script>
+
+    var picUrl = 'https://picsum.photos/300/200'
+
+    var canvas = document.getElementById('canvas')
+    var ctx = canvas.getContext('2d');
+    canvas.width = 300
+    canvas.hight = 200
+    // var img = new Image()
+    // img.src = picUrl
+    
+    // img.onload = function() {
+    //     canvas.width = 300
+    //     canvas.hight = 200
+    //     ctx.drawImage(img, 0, 0)
+    // }
+    ctx.globalAlpha  = 1
+    ctx.fillStyle = 'rgba(122,32,13, .9)'
+    ctx.fillRect(0,0, 300, 200)
+    ctx.fillStyle = "#000";
+    ctx.font = '18px'
+    ctx.textAlign = 'center'
+    // ctx.textBaseline = "middle";
+    ctx.fillText('刮一刮', 150, 75)
+    var flag = false
+        canvas.addEventListener('mousedown', function(event) {
+            flag = true
+            drawRect(event)
+        })
+
+        canvas.addEventListener('mousemove', function (event) {
+            if (flag) {
+                drawRect(event)
+            }
+        })
+
+        canvas.addEventListener('mouseup', function(event) {
+            flag = false
+            clear()
+        })
+    
+        function clear() {
+            const canvasData = ctx.getImageData(0,0,300, 200)
+            const max = canvasData.data.length / 4 // 总共的像素点
+            let num = 0
+            for(var i = 0; i< canvasData.data.length;i+=4) {
+                if (canvasData.data[i+3] == 0) {
+                    num++
+                }
+            }
+            console.log(num, max)
+            if (num > max * 0.6) {
+                canvas.remove()
+            }
+        }
+
+        function drawRect(e) {
+        //             var canvasPos = canvas.getBoundingClientRect(); // 获取矩形canvas在页面中的绝对位置
+        //   var pageScrollTop = document.documentElement.scrollTop || document.body.scrollTop; // 获取页面滚动的高度(处理页面下滑后才出现刮奖，计算坐标点)
+        //   var pageScrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft; // 同理
+        //   var mouseX = (e.pageX || e.targetTouches[0].pageX) - canvasPos.left - pageScrollLeft; // 点击点坐标的X轴距离 - 矩形左上角X轴距离 - 页面卷出去的X距离
+        //   var mouseY = (e.pageY || e.targetTouches[0].pageY) - canvasPos.top - pageScrollTop; // 同理
+        //   ctx.globalCompositeOperation = "destination-out"; // 相交部分不显示
+        //   ctx.beginPath(); // 开始一条路径
+        //   ctx.fillStyle = "white"; // 白色
+        //   ctx.moveTo(mouseX, mouseY); // 移动到位置 mouseX,mouseY
+        //   ctx.arc(mouseX, mouseY, 6, 0, 2 * Math.PI); // 画一个圆 半径为6
+        //   ctx.fill(); // 填充
+        ctx.fillStyle = 'white'
+
+        const canvasRect = canvas.getBoundingClientRect()
+        const cx = e.clientX - canvasRect.left 
+        const cy = e.clientY - canvasRect.top
+        // ctx.moveTo(e.pageX - canvasRect.left - document.body.scrollLeft, e.pageY - canvasRect.top - document.body.scrollTop)
+        ctx.moveTo(cx, cy)
+        ctx.globalCompositeOperation = "destination-out"; 
+        // ctx.fillRect(e.pageX, e.pageY - 20, 10, 10)
+        ctx.arc(cx, cy, 10, 0, 2 * Math.PI)
+        ctx.fill()
+        }
+
+</script>
+</html>

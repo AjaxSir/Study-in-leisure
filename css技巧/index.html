@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .input:focus-within{
+            padding: 10px;
+            background-color: aqua;
+            
+        }
+        span:has(+input[required])::after{
+                content: "*";
+                color: red;
+            }
+            .letter{
+                width: 100px;
+            }
+            .letter::selection{
+                background-color: red;
+                color: white;
+            }
+            .letter::first-letter{
+                font-size: 45px;
+                /* float: left; */
+            }
+            .cont{
+                overflow: hidden;
+                position: relative;
+                width: 400px;
+                height: 100vh;
+
+            }
+            .mask{
+                position: absolute;
+                inset: 0;
+                z-index: 999;
+                width: 100%;
+                backdrop-filter: grayscale(50%);
+                transition: width 1s;
+            }
+            .cont:hover .mask{
+                width: 0;
+            }
+            .mask::before{
+                content: " ";
+                position: absolute;
+                left: 0px;
+                filter: grayscale(0%);
+                height: 100%;
+                width: 0px;
+            }
+            .cont:hover .mask::before{
+                width: 100%;
+                transition: width 1s;
+            }
+    </style>
+</head>
+ssh-keygen -t rsa -C "745284215@qq.com"
+<body>
+    <!-- <div class="input">
+        <span>账号:</span>
+        <input required type="text">
+        <span>账号111:</span>
+        <input type="text">
+    </div>
+    <div class="letter">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
+        啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
+        啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
+        啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
+        啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊
+    </div> -->
+    <div class="cont">
+        <img src="./nevesto.png" alt="">
+        <div class="mask">
+            
+        </div>
+       
+    </div>
+    
+   
+</body>
+</html>

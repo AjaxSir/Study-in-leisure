@@ -1,0 +1,98 @@
+﻿<!--
+ * @Date: 2024-05-06 10:41:45
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2024-07-10 11:06:35
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue2 的实现原理</title>
+</head>
+<body>
+    <div id="app">
+        <span v-text="title"></span>
+        <span v-text="content"></span>
+        <input v-model="title"></input>
+        <input v-model="content"></input>
+    </div>
+</body>
+<script>
+    class VueS {
+        constructor({el, data}) {
+            this.$el = typeof el === 'string' ? document.querySelector(el) : el;
+            this.$data = data;
+            this.dir = {}
+            
+            this.Observer(data)
+            this.Compile(this.$el)
+        }
+        Observer(data) {
+            for(let key in data) {
+                this.dir[key] = []
+                let val = data[key]
+                const dirArr = this.dir[key]
+                Object.defineProperty(this.$data, key, {
+                    get() {
+                        return Reflect.get(this.$data, key)
+                    },
+                    set(newVal) {
+                        // if (typeof val === 'object' && val !== null) {
+                        //     Observer(data[key])
+                        // }
+                        if (val !== newVal) {
+                            val = newVal
+                            dirArr.forEach(e => {
+                                e.update()
+                            })
+                        }
+                        
+                    }
+                })
+            }
+        }
+        Compile(el) {
+            for(let items = 0; items < el.children.length;items++) {
+                let item = el.children[items]
+                if (item.children.length) {
+                    this.Compile(el.children)
+                } else {
+                    if (item.hasAttribute('v-text')) {
+						const val = item.getAttribute('v-text')
+                        this.dir[val].push(new Watcher(item, this.$data, val, 'innerHTML'))
+                    }
+                    if (item.hasAttribute('v-model')) {
+                        const val = item.getAttribute('v-model')
+                        this.dir[val].push(new Watcher(item, this.$data, val, 'value'))
+                        item.addEventListener('input', (e) => {
+                            this.$data[val] = e.target.value
+                        })
+                    }
+                }
+            }
+        }
+    }
+    class Watcher {
+        constructor(node, data, val, type) {
+            this.node = node;
+            this.data = data;
+            this.val = val;
+            this.type = type;
+            this.update()
+        }
+        update() {
+            this.node[this.type] = this.data[this.val]
+        }
+    }
+
+    new VueS({
+        el: "#app",
+        data: {
+            title: '标题',
+            content: '内容'
+        }
+    })
+</script>
+</html>

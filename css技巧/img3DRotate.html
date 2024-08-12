@@ -1,0 +1,87 @@
+﻿<!--
+ * @Date: 2024-07-10 09:49:53
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2024-07-10 10:35:18
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Document</title>
+		<style>
+			.card {
+				/* position: fixed;
+            inset: 0; */
+				width: 20%;
+				margin: 100px auto;
+				aspect-ratio: 1 / 1;
+				text-align: center;
+                transform: perspective(500px) rotateX(var(--vx, 0deg)) rotateY(var(--vy, 0deg));
+			}
+			img {
+				width: 100%;
+				
+			}
+            .card:hover img{
+                box-shadow: 1px 1px 2px lightgray, 2px 2px 2px lightgray,
+					3px 3px 3px lightgray;
+            }
+			/* .box {
+	width: 50%;
+	margin: 100px auto;
+	background-color: pink;
+}
+
+.inner-box {
+	 width: 100%;
+	 padding-bottom: 75%;
+	 position: relative;
+}
+
+.container {
+	 position: absolute;
+	 inset: 0;
+} */
+		</style>
+	</head>
+	<body>
+		<div class="card">
+			<img
+            class="img"
+				src="./nevesto.png"
+				alt=""
+			/>
+		</div>
+		<!-- <div class="box">
+        <div class="inner-box">
+           <div class="container">
+           </div>
+         </div>
+      </div> -->
+	</body>
+    <script>
+        const card = document.querySelector('.card')
+        let xA = [-20, 20]
+        let yA = [-20, 20]
+        const getDeg = (range, x, total) => {
+            return (x / total) * (range[1] - range[0]) + range[0];
+        }
+        card.addEventListener('mousemove', function(e){
+            const { offsetX, offsetY } = e
+            const { offsetHeight, offsetWidth } = card
+            const y = -getDeg(xA, offsetX, offsetWidth)
+            const x = getDeg(yA, offsetY, offsetHeight)
+            card.style.setProperty('--vx', `${x}deg`)
+            card.style.setProperty('--vy', `${y}deg`)
+        })
+        card.addEventListener('mouseout', function(){
+            card.style.setProperty('--vx', '0deg')
+            card.style.setProperty('--vy', '0deg')
+        })
+    </script>
+</html>

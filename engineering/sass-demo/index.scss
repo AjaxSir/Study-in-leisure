@@ -1,0 +1,62 @@
+﻿/*
+ * @Date: 2024-04-25 14:02:23
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2024-04-25 14:43:14
+ * @Description: 
+ */
+.title{
+    position: fixed;
+    inset: 0;
+    line-height: 100vh;
+    text-align: center;
+    color: white;
+}
+body{
+    background-color: black;
+    overflow: hidden;
+}
+@function createCount($n) {
+    $result: '#{random(100)}vw #{random(100)}vh white';
+    @for $i from 1 through $n {
+        $result: '#{$result}, #{random(100)}vw #{random(100)}vh white';
+    }
+    @return unquote($result)
+};
+$w: 5px;
+    $count: 1000;
+    $duration: 50s;
+@for $i from 1 through 4{
+    .layer#{$i}{
+        $count: floor($count / pow(2, $i - 1));
+        $currentDuration: floor($duration / pow(2, $i - 1));
+        $opciaty: calc(1 / $i);
+        @debug $count;
+        @debug $currentDuration;
+        width:calc($w / $i);
+        height:calc($w / $i);;
+        border-radius: 50%;
+        background-color: white;
+        box-shadow: createCount($count);
+        animation: moveUp  $currentDuration linear infinite;
+        opacity: $opciaty;
+        position: relative;
+        &::after{
+            content: "";
+            position: absolute;
+            top: 100vh;
+            left: 0;
+            width: inherit;
+            height: inherit;
+            border-radius: inherit;
+            background-color: inherit;
+            box-shadow: inherit;
+        }
+    }
+}
+
+
+@keyframes moveUp {
+    100% {
+        transform: translateY(-100vh);
+    }
+}

@@ -1,0 +1,17 @@
+﻿node_modules
+.vscode
+*.log
+*.lock
+
+sram
+deno
+
+py
+
+*.pub
+company
+*.yaml
+
+autoParticleRoot
+
+contract
