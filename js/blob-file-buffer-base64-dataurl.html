@@ -1,0 +1,128 @@
+﻿<!--
+ * @Date: 2024-08-12 15:40:52
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2024-08-13 14:19:37
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #drag{
+        width: 200px;
+        height: 200px;
+        background-color: black;
+    }
+    #_drag{
+        width: 200px;
+        height: 200px;
+        background-color: red;
+    }
+    #canvas {
+        width: 200px;
+        height: 200px;
+    }
+</style>
+
+<body>
+    <input type="file" id="file">
+    <img id="img" alt="">
+    <img id="demo" width="100px" src="./images/demo.png">
+    <div id="drag"></div>
+    <button id="btn">画画</button>
+    <canvas id="canvas"></canvas>
+</body>
+<script>
+    const file = document.getElementById("file");
+    const img = document.getElementById("img");
+    let url =  null
+    file.addEventListener("change", (e) => {
+        const _file = e.target.files[0]
+        // file 也是属于blob的一种特殊blob    blob => file    new File([blob], filename, { type })
+        url = URL.createObjectURL(_file)
+        img.src = url
+        URL.revokeObjectURL(url)
+    })
+    const drag = document.getElementById("drag");
+    
+    
+    
+    drag.addEventListener('dragover', (e) => {
+        e.preventDefault()
+    })
+    drag.addEventListener('dragenter', (e) => {
+        e.preventDefault()
+        drag.style.backgroundColor = '#eee'
+    })
+    drag.addEventListener('dragleave', (e) => {
+        e.preventDefault()
+        drag.style.backgroundColor = 'black'
+    })
+    // _drag.addEventListener('drag', (e) => {
+    //     // e.preventDefault()
+    //     console.log('drag')
+    // })
+    drag.addEventListener('drop', (e) => {
+        e.preventDefault()
+        console.log(e.dataTransfer.files, 'dragenter')
+    })
+
+    const canvas = document.getElementById('canvas')
+    const ctx = canvas.getContext('2d')
+    function drawImage() {
+        console.log(111)
+        ctx.drawImage(document.getElementById("demo"), 0, 0, canvas.width, canvas.height)
+    }
+    document.getElementById("btn").addEventListener("click", function() {
+    if (document.getElementById("demo").complete) {
+        drawImage();
+        canvas.toBlob((blob) => {
+            console.log('blob loaded', blob)
+            const file = new File([blob], 'image', {
+                type: 'image/png'
+            })
+            console.log(file, 'file')
+            // file 转为base64
+            const flReader = new FileReader()
+            flReader.readAsDataURL(file)
+            flReader.onload = () => {
+                console.log(flReader.result, 'flReader.result') // base64
+            }
+        })
+        console.log(
+            canvas.toDataURL(), 'canvas.toDataURL()' // canvas转为base64
+            )
+            
+    } else {
+        console.error("Image is not loaded yet.");
+    }
+    // blob 下载文件
+    // response => {
+    //     console.log(response)
+    //     const url = window.URL.createObjectURL(new Blob([response.data])) // 创建下载链接
+    //     const link = document.createElement('a')
+    //     link.href = url
+    //     link.download = '全文导入模板.xlsx' // 设置文件名
+    //     document.body.appendChild(link)
+    //     link.click() // 触发下载
+    //     document.body.removeChild(link) // 下载后移除元素
+    // }
+    // data URL 格式 data:[<mediatype>][;base64],<data>
+    // 得到DATAURL 方法1：
+    // canvas.toDataURL();
+    // 2：
+    
+    // const reader = new FileReader();    
+    // Read as Data URL
+    // reader.readAsDataURL(file);
+    // reader.onload = function (e) {
+    //     console.log("打印***e,reader", e, reader);
+    // }
+});
+
+</script>
+</html>
