@@ -1,0 +1,46 @@
+﻿<!--
+300/400 * @Date: 2024-08-13 15:13:08
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2024-08-14 11:19:08
+ * @Description: live sass compiler sass 实时编译插件
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+    <div class="ring">
+        <img class="img" src="https://picsum.photos/300/400" alt="">
+        <img class="img" src="https://picsum.photos/300/400" alt="">
+        <img class="img" src="https://picsum.photos/300/400" alt="">
+        <img class="img" src="https://picsum.photos/300/400" alt="">
+        <img class="img" src="https://picsum.photos/300/400" alt="">
+        <img class="img" src="https://picsum.photos/300/400" alt="">
+        <img class="img" src="https://picsum.photos/300/400" alt="">
+        <img class="img" src="https://picsum.photos/300/400" alt="">
+        <img class="img" src="https://picsum.photos/300/400" alt="">
+        <img class="img" src="https://picsum.photos/300/400" alt="">
+    </div>
+</body>
+<script>
+    const imgs = document.querySelectorAll('.img')
+    const ring = document.querySelector('.ring')
+    const len = imgs.length
+    for(let i = 0; i < len;i++) {
+        const currentImg = imgs[i]
+        currentImg.addEventListener('mouseenter',() => {
+            // const styles = getComputedStyle(currentImg)['transform']
+            // console.log(styles, 'styles')
+            // currentImg.style.transform = `${styles} scale(1.1)`
+            ring.style.animationPlayState = 'paused'
+        })
+        currentImg.addEventListener('mouseleave', () => {
+            ring.style.animationPlayState = 'running'
+        })
+    }
+</script>
+</html>
