@@ -1,0 +1,71 @@
+﻿<!--
+ * @Date: 2024-08-15 16:05:54
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2024-08-15 16:48:04
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Document</title>
+	</head>
+	<style>
+		* {
+			padding: 0;
+			margin: 0;
+		}
+		@property --percentage {
+			syntax: '<percentage>';
+			inherits: true;
+			initial-value: 0%;
+		}
+		.content {
+			width: 100vw;
+			height: 100vh;
+			position: relative;
+		}
+		.content > div {
+			width: inherit;
+			height: inherit;
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
+		.screen-1 {
+			background: url('https://picsum.photos/1920/911');
+            
+		}
+		.content:is(:hover, :focus) .screen-2 {
+			animation: scene-transition 2s linear forwards;
+		}
+		@keyframes scene-transition {
+			to {
+				--percentage: 105%;
+			}
+		}
+		.screen-2 {
+			background: url('https://picsum.photos/1920/911?time=111');
+			mask: radial-gradient(
+				circle,
+                #fff calc(var(--percentage)),
+                #fff calc(var(--percentage))
+			);
+		}
+	</style>
+	<body>
+		<div class="content">
+			<div class="screen-1"></div>
+			<div class="screen-2"></div>
+		</div>
+	</body>
+    <script>
+        /* document.querySelector('.content').addEventListener('mouseleave', () => {
+            document.querySelector('.screen-2').style.animationDirection = 'reverse';
+        }); */
+</script>
+</html>

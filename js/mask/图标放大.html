@@ -1,0 +1,93 @@
+﻿<!--
+ * @Date: 2024-08-15 15:10:57
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2024-08-15 16:05:37
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    *{
+        padding: 0;
+        margin: 0;
+    }
+    .content{
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+    }
+    .content>div{
+        width: inherit;
+        height: inherit;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+    .content:is(:hover, :focus) .screen-2 {
+        animation: animate 6s linear 1s forwards;
+    }
+    .screen-1 {
+        /* z-index: 2; */
+        /* conic-gradient 锥形渐变  */
+        /* https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/c3ca7dd6dda44e02929681ef3c2d77ae~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp */
+        /* radial-gradient 径向渐变 */
+        /* https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/10ef636b94ce483aa664769bd100752e~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp */
+        /* linear-gradient 线性渐变 */
+        background: linear-gradient();
+        background: radial-gradient(circle, transparent 5%, transparent 10%), url('https://picsum.photos/1920/911');
+    }
+    .screen-2 {
+        background: url('https://picsum.photos/1920/911?time=111');
+        -webkit-mask-image: url(https://assets.codepen.io/77020/sw-jedi-crest.svg);
+        -webkit-mask-size: 10%;
+        -webkit-mask-position: center;
+        -webkit-mask-repeat: no-repeat;
+        animation: animate1 1s linear forwards 1s ;
+        /* name */ 
+        
+        /* duration */ 
+
+        /* timing-function linear: 动画从头到尾的速度是相同的。 ease	默认。
+            动画以低速开始，然后加快，在结束前变慢。
+            ease-in	动画以低速开始。
+            ease-out	动画以低速结束。
+            ease-in-out  */  
+
+         /* fill-mode forwards	在动画结束后（由 animation-iteration-count 决定），动画将应用该属性值。*/    
+
+         /* delay */ 
+
+         /* iteration-count n	一个数字，定义应该播放多少次动画	infinite	指定动画应该播放无限次（永远） */
+
+         /* direction  normal	默认值。动画按正常播放。	测试 »
+            reverse	动画反向播放。	测试 »
+            alternate	动画在奇数次（1、3、5...）正向播放，在偶数次（2、4、6...）反向播放。	测试 »
+            alternate-reverse	动画在奇数次（1、3、5...）反向播放，在偶数次（2、4、6...）正向播放。*/ 
+    }
+
+    @keyframes animate {
+        100%{
+            -webkit-mask-size: 2000%;
+        }
+    }
+    @keyframes animate1 {
+        0%{
+            -webkit-mask-size: 2000%;
+        }
+        100%{
+            -webkit-mask-size: 10%;
+        }
+    }
+</style>
+<body>
+    <div class="content">
+        <div class="screen-1"></div>
+        <div class="screen-2"></div>
+    </div>
+</body>
+</html>
