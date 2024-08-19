@@ -1,0 +1,25 @@
+﻿<!--
+ * @Date: 2024-08-19 16:46:16
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2024-08-19 16:51:38
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    var arr = [1,5,7,9,3,2,1,4,5,6]
+    // 不会改变原数组
+    console.log(arr.toSorted((a, b) => a - b), arr)
+    console.log(arr.toReversed(), arr)
+    console.log(arr.toSpliced(0, 1), arr)
+    console.log(arr.with(0, 999), arr)
+</script>
+</html>
