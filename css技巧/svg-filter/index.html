@@ -1,0 +1,124 @@
+﻿<!--
+ * @Date: 2024-08-19 10:56:25
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2024-08-19 16:04:39
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Document</title>
+	</head>
+	<body>
+		<!-- x y width height “视区盒子”的意思，好比在说：“SVG啊，要不你就让我铺满你吧~”  viewBox="0 0 600 600"-->
+		<!-- preserveAspectRatio="none" -->
+		<input
+			type="text"
+			id="text-input"
+		/>
+		<input
+			type="color"
+			id="color-input"
+		/>
+		<br />
+		<svg
+			width="600"
+			height="400"
+		>
+			<Image
+				href="./cd1.png"
+				x="0"
+				y="0"
+				width="100%"
+				height="100%"
+				preserveAspectRatio="none"
+			></Image>
+			<defs>
+				<filter id="conform">
+					<feImage
+						href="./cd1.png"
+						x="0"
+						y="0"
+						width="100%"
+						height="100%"
+						preserveAspectRatio="none"
+						result="ORIGIN"
+					></feImage>
+					<!-- 将图片置成灰度图片 -->
+					<feColorMatrix
+						in="ORIGIN"
+						type="saturate"
+						values="0"
+						result="GRAY"
+					></feColorMatrix>
+					<!-- 改变文本中每一个像素点的坐标位置 SourceGraphic 源头 这里指的是text文案 -->
+					<!-- 将文字 与 灰度图产生偏移 -->
+					<feDisplacementMap
+						in="SourceGraphic"
+						in2="GRAY"
+						scale="15"
+						xChannelSelector="R"
+						yChannelSelector="R"
+						result="CHANNEL"
+					></feDisplacementMap>
+					<feImage
+						href="./cd1.png"
+						x="0"
+						y="0"
+						width="600"
+						height="400"
+						preserveAspectRatio="none"
+						result="BG"
+					></feImage>
+					<!-- 将文字设置透明度 -->
+					<feColorMatrix
+						in="CHANNEL"
+						type="matrix"
+						values="1 0 0 0 0
+                            0 1 0 0 0
+                            0 0 1 0 0
+                            0 0 0 .9 0"
+						result="OPACITY"
+					></feColorMatrix>
+					<feBlend
+						in="BG"
+						in2="OPACITY"
+						mode="multiply"
+						result="blend_text"
+					></feBlend>
+				</filter>
+			</defs>
+			<text
+				id="text"
+				x="50%"
+				y="50%"
+				font-size="10em"
+				font-weight="bold"
+				text-anchor="middle"
+				alignment-baseline="middle"
+				filter="url(#conform)"
+				fill="#000000"
+			>
+				sxl
+			</text>
+		</svg>
+	</body>
+	<script>
+		const textInput = document.getElementById('text-input');
+		const colorInput = document.getElementById('color-input');
+		const text = document.getElementById('text');
+        textInput.onchange = (e) => {
+            text.innerHTML = textInput.value
+            console.log(textInput.value, e)
+        }
+        colorInput.onchange = (e) => {
+            text.style.fill = colorInput.value
+            console.log(colorInput.value, e)
+        }
+	</script>
+</html>
