@@ -1,0 +1,50 @@
+﻿<!--
+ * @Date: 2024-08-20 14:02:02
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2024-08-20 14:22:54
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    img{
+        width: 300px;
+        height: 300px;
+    }
+    .img-1{
+        width:50vw;
+        height: 50vw;
+        display: block;
+        margin: 0 auto;
+    }
+</style>
+<body>
+    <!-- 固定宽高 -->
+    <!-- <img srcset="
+        https://picsum.photos/id/200/300/300 1x,
+        https://picsum.photos/id/400/600/600 2x,
+        https://picsum.photos/id/800/1200/1200 4x,
+        https://picsum.photos/id/1600/2400/2400 8x" alt=""> -->
+        <img class="img-1" 
+        srcset="
+            https://picsum.photos/id/88/150 150w,
+            https://picsum.photos/id/88/300 300w,
+            https://picsum.photos/id/88/600 600w,
+            https://picsum.photos/id/88/1200 1200w,
+            https://picsum.photos/id/88/2400 2400w
+        " sizes="50vw" alt="">
+        <!-- <img sizes="
+            (max-width: 300px) 150px,
+            (max-width: 600px) 300px,
+            (max-width: 900px) 600px,
+            (max-width: 1200px) 1200px,
+            (max-width: 1500px) 2400px"
+        srcset=
+        " alt=""> -->
+</body>
+</html>
