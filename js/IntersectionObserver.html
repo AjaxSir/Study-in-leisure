@@ -1,0 +1,141 @@
+﻿<!--
+ * @Date: 2024-08-21 14:20:43
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2024-08-21 15:07:26
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Document</title>
+	</head>
+	<style>
+		.content {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+            /* padding-top: 912px; */
+		}
+		.ig {
+			flex-basis: calc(25% - 10px);
+            aspect-ratio: 2 / 3;
+			margin: 5px;
+			box-sizing: border-box;
+		}
+	</style>
+	<body>
+		<div class="content">
+			<img
+				src="https://picsum.photos/id/237/200/300"
+				data-src="https://picsum.photos/200/300?r=1"
+				class="ig"
+			/><img
+				src="https://picsum.photos/id/237/200/300"
+				data-src="https://picsum.photos/200/300?r=2"
+				class="ig"
+			/><img
+				src="https://picsum.photos/id/237/200/300"
+				data-src="https://picsum.photos/200/300?r=3"
+				class="ig"
+			/><img
+				src="https://picsum.photos/id/237/200/300"
+				data-src="https://picsum.photos/200/300?r=4"
+				class="ig"
+			/><img
+				src="https://picsum.photos/id/237/200/300"
+				data-src="https://picsum.photos/200/300?r=5"
+				class="ig"
+			/><img
+				src="https://picsum.photos/id/237/200/300"
+				data-src="https://picsum.photos/200/300?r=6"
+				class="ig"
+			/><img
+				src="https://picsum.photos/id/237/200/300"
+				data-src="https://picsum.photos/200/300?r=7"
+				class="ig"
+			/><img
+				src="https://picsum.photos/id/237/200/300"
+				data-src="https://picsum.photos/200/300?r=8"
+				class="ig"
+			/><img
+				src="https://picsum.photos/id/237/200/300"
+				data-src="https://picsum.photos/200/300?r=9"
+				class="ig"
+			/><img
+				src="https://picsum.photos/id/237/200/300"
+				data-src="https://picsum.photos/200/300?r=10"
+				class="ig"
+			/><img
+				src="https://picsum.photos/id/237/200/300"
+				data-src="https://picsum.photos/200/300?r=11"
+				class="ig"
+			/><img
+				src="https://picsum.photos/id/237/200/300"
+				data-src="https://picsum.photos/200/300?r=12"
+				class="ig"
+			/><img
+				src="https://picsum.photos/id/237/200/300"
+				data-src="https://picsum.photos/200/300?r=13"
+				class="ig"
+			/><img
+				src="https://picsum.photos/id/237/200/300"
+				data-src="https://picsum.photos/200/300?r=14"
+				class="ig"
+			/><img
+				src="https://picsum.photos/id/237/200/300"
+				data-src="https://picsum.photos/200/300?r=15"
+				class="ig"
+			/><img
+				src="https://picsum.photos/id/237/200/300"
+				data-src="https://picsum.photos/200/300?r=16"
+				class="ig"
+			/><img
+				src="https://picsum.photos/id/237/200/300"
+				data-src="https://picsum.photos/200/300?r=17"
+				class="ig"
+			/><img
+				src="https://picsum.photos/id/237/200/300"
+				data-src="https://picsum.photos/200/300?r=18"
+				class="ig"
+			/><img
+				src="https://picsum.photos/id/237/200/300"
+				data-src="https://picsum.photos/200/300?r=19"
+				class="ig"
+			/><img
+				src="https://picsum.photos/id/237/200/300"
+				data-src="https://picsum.photos/200/300?r=20"
+				class="ig"
+			/>
+		</div>
+	</body>
+	<script>
+		var ob = new IntersectionObserver(
+			(entries) => {
+                console.log(entries)
+                for(let enter of entries) {
+                    if (enter.isIntersecting) {
+                        console.log('交叉')
+                        const img = enter.target
+                        img.src = img.getAttribute('data-src');
+                        ob.unobserve(img);  // 图片加载完毕，解除对该图片的观察   节省性能
+                    }
+                }
+			},
+			{
+				// root: null, // null 表示与视口    只能填写父、祖元素
+				threshold: 0, // 交叉的幅度
+				// rootMargin: '10px', // 向外拓宽视口    只能填写父、祖元素宽度
+			}
+		);
+
+		const imgs = document.querySelectorAll('img[data-src]');
+		imgs.forEach((img) => {
+			ob.observe(img);
+		});
+	</script>
+</html>
