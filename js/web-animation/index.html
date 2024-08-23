@@ -1,0 +1,78 @@
+﻿<!--
+ * @Date: 2024-08-23 14:11:54
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2024-08-23 14:43:09
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    body{
+        background: black;
+        position: relative;
+    }
+    .ball{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: red;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        
+    }
+</style>
+<body>
+    <div class="ball"></div>
+</body>
+<script>
+    const ball = document.querySelector('.ball');
+
+    window.addEventListener('click', (e) => {
+        console.log(e.clientX, e.clientY)
+        const initX = ball.getBoundingClientRect().left 
+        const initY = ball.getBoundingClientRect().top
+        ball.style.left = `${e.clientX - 20}px`;
+        ball.style.top = `${e.clientY - 20}px`;
+        ball.getAnimations().forEach(animate => animate.cancel())
+        const rad = Math.atan2(e.clientY - initY, e.clientX - initX)
+        const deg = rad * (180 / Math.PI)
+        ball.animate([
+            {
+                left: `${initX}px`,
+                top: `${initY}px`,
+                transform: `rotate(${deg}deg) `,
+                easing: 'ease-out',
+            },
+            {
+                left: `${initX}px`,
+                top: `${initY}px`,
+                transform: `rotate(${deg}deg) scaleX(1.5)`,
+                offset: 0.6
+            },
+            {
+                left: `${e.clientX - 20}px`,
+                top: `${e.clientY - 20}px`,
+                transform: `rotate(${deg}deg) scaleX(1.5)`,
+                offset: 0.8
+            },
+            {
+                left: `${e.clientX - 20}px`,
+                top:`${e.clientY - 20}px`,
+                transform: `rotate(${deg}deg)`
+            }
+        ], {
+            duration: 1000
+        })
+    })
+</script>
+</html>
