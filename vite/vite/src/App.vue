@@ -1,14 +1,15 @@
 <!--
  * @Date: 2024-05-23 14:25:08
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-08-09 15:24:29
+ * @LastEditTime: 2024-08-27 10:47:42
  * @Description: 
 -->
 <script setup lang="ts">
 // import HelloWorld from "./components/HelloWorld.vue";
 // import Responsive from './components/Responsive.vue'
 // import ClipPath from './components/clipPath.vue';
-import AnimateSvg from './components/animateSvg.vue';
+// import AnimateSvg from './components/animateSvg.vue';
+import ProgressiveImg from './components/ProgressiveImage.vue';
 import { ref } from 'vue'
 
 const value = ref(0)
@@ -18,7 +19,8 @@ const value = ref(0)
   <!-- <HelloWorld :value="1" msg="Vite + Vue" />
   <Responsive :value="value" /> -->
   <!-- <ClipPath /> -->
-  <AnimateSvg />
+  <!-- <AnimateSvg /> -->
+  <ProgressiveImg />
   <button @click="value+= 1">incres</button>
 </template>
 
