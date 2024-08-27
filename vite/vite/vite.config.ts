@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-05-23 14:25:08
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-08-09 15:39:10
+ * @LastEditTime: 2024-08-27 11:26:06
  * @Description: 
  */
 import { defineConfig } from 'vite'
@@ -21,12 +21,22 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
+        entryFileNames: 'js/[name]-[hash].js',
+        chunkFileNames: 'js/[name]-[hash].js',
         assetFileNames:(assetInfo) => {
-          console.log(assetInfo.name, 'assetInfo.name')
-          if (assetInfo.name === 'vendor') {
-            return 'assets/[name][extname]'
+          // console.log(assetInfo.name, 'assetInfo.name')
+          // if (assetInfo.name === 'vendor') {
+          //   return 'assets/[name][extname]'
+          // }
+          // return 'assets/[name]-[hash][extname]'
+          if(assetInfo.name!.endsWith('.css')) {
+            return 'css/[name]-[hash].css'
           }
-          return 'assets/[name]-[hash][extname]'
+          const imgExts = [ '.png', '.jpg', '.jpeg', '.gif']
+          if(imgExts.some(e => assetInfo.name!.endsWith(e))) {
+            return 'images/[name]-[hash][ext]'
+          }
+          return 'assets/[name]-[hash][ext]'
         },
         manualChunks(id, { getModuleInfo, getModuleIds }) {
           if (id.indexOf("node_modules") !== -1) {
