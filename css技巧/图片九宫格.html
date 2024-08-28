@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .content{
+        width: 240px;
+        height: 240px;
+        /* position: relative;; */
+        margin: 20px auto;
+    }
+    .img{
+        width: 80px;
+        height: 80px;
+        background: url(https://picsum.photos/240/240) ;
+        box-shadow: inset 0px 0px 1px rgba(0,0,0);
+        float: left;
+        position: relative;
+        transition: all .1s;
+        /* position: absolute; */
+    }
+    .img:nth-child(3n + 1){
+        background-position-x: 0;
+        left: -20px;
+    }
+    .img:nth-child(3n + 2){
+        background-position-x: -100%;
+        left: 0px;
+    }
+    .img:nth-child(3n){
+        background-position-x: -200%;
+        left: 20px;
+    }
+    .img:nth-child(n + 7) {
+        background-position-y: -200%;
+        top: 20px;
+    }
+    .img:nth-child(-n  + 6) {
+        background-position-y: -100%;
+        top: 0px;
+    }
+    .img:nth-child(-n + 3) {
+        background-position-y: 0%;
+        top: -20px;
+    }
+    .content:hover .img{
+        left: 0;
+        top: 0;
+        box-shadow: inset 0 0 0 ;
+    }
+</style>
+<body>
+    <div class="content">
+        <div class="img"></div>
+        <div class="img"></div>
+        <div class="img"></div>
+        <div class="img"></div>
+        <div class="img"></div>
+        <div class="img"></div>
+        <div class="img"></div>
+        <div class="img"></div>
+        <div class="img"></div>
+    </div>
+</body>
+</html>
