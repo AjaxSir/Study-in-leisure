@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    div{
+        width: 500px; height: 300px;
+        margin: 10px auto;
+
+    }
+    .hight{
+        background-color: red;
+        color: white;
+        border-radius: 5px;
+        /* 文本不会换行，文本会在在同一行上继续，直到遇到 <br> 标签为止。 */
+        /* white-space:nowrap; */
+        /* // 允许在单词内换行。 */
+        word-break: break-all; 
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
+        padding: 3px 5px;
+        line-height: 30px;
+    }
+</style>
+<body>
+    <div>
+        error: Failed to write to output file: open C:\Users\bst\Desktop\duyi\vite\vite\node_modules\.vite\deps_temp_22afee30\chunk-HS45CFH5.js: Access is denied.
+        at failureErrorWithLog (C:\Users\bst\Desktop\duyi\vite\vite\node_modules\.pnpm\esbuild@0.20.2\node_modules\esbuild\lib\main.js:1651:15)
+        at C:\Users\bst\Desktop\duyi\vite\vite\node_modules\.pnpm\esbuild@0.20.2\node_modules\esbuild\lib\main.js:1059:25
+        <span class="hight"> at C:\Users\bst\Desktop\duyi\vite\vite\node_modules\.pnpm\esbuild@0.20.2\node_modules\esbuild\lib\main.js:1527:9
+            at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+        </span>
+    </div>
+</body>
+</html>
