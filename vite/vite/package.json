@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "lottie-web": "^5.12.2",
+    "pinia": "^2.2.2",
     "vue": "^3.4.21",
-    "vue-global-api": "^0.4.1"
+    "vue-global-api": "^0.4.1",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",

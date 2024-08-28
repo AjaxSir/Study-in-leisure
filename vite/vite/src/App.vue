@@ -1,7 +1,7 @@
 <!--
  * @Date: 2024-05-23 14:25:08
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-08-27 10:47:42
+ * @LastEditTime: 2024-08-28 09:49:50
  * @Description: 
 -->
 <script setup lang="ts">
@@ -11,7 +11,11 @@
 // import AnimateSvg from './components/animateSvg.vue';
 import ProgressiveImg from './components/ProgressiveImage.vue';
 import { ref } from 'vue'
-
+import  useStore from './store/pinia'
+const { counterStore } = useStore()
+// import { useStore } from 'vuex'
+// const store = useStore()
+// console.log(store)
 const value = ref(0)
 </script>
 
@@ -21,7 +25,15 @@ const value = ref(0)
   <!-- <ClipPath /> -->
   <!-- <AnimateSvg /> -->
   <ProgressiveImg />
-  <button @click="value+= 1">incres</button>
+  <!-- vuex -->
+    <!-- <span>{{ store.state.counter.counter }}</span> -->
+  <!-- <button @click="value+= 1">incres</button> -->
+  <!-- <button @click="store.commit('addCounter', 1)">incres counter</button> -->
+  <!-- <button @click="store.dispatch('addCounterAction', 1)">incres counter</button> -->
+
+    <!-- pinia -->
+    <span>{{ counterStore.count }}</span>
+    <button @click="counterStore.increment()">pinia add</button>
 </template>
 
 <style scoped>
