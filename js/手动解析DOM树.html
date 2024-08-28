@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Document</title>
+	</head>
+	<body>
+		<div
+			data-v-50548bfc=""
+			data-v-5b99e65b=""
+			data-transfer="true"
+			class="dislike-modal byte-modal v-transfer-dom"
+		>
+			<div
+				class="byte-modal__mask"
+				style="z-index: 1001; display: none"
+			></div>
+			<div
+				class="byte-modal__wrapper"
+				style="z-index: 1001; display: none"
+			>
+				<div
+					class="byte-modal__content"
+					style="width: 500px"
+				>
+					<!---->
+					<div class="byte-modal__body">
+						<div
+							data-v-50548bfc=""
+							class="container"
+						>
+							<div
+								data-v-50548bfc=""
+								class="title"
+							>
+								确定屏蔽该用户
+							</div>
+							<div
+								data-v-50548bfc=""
+								class="content"
+							>
+								<span data-v-50548bfc="">
+									屏蔽后，对方将不能关注你、与你产生任何互动，无法查看你的主页
+								</span>
+							</div>
+							<div
+								data-v-50548bfc=""
+								class="footer"
+							>
+								<button
+									data-v-50548bfc=""
+									type="button"
+									class="btn-cancel byte-btn byte-btn--default byte-btn--normal"
+								>
+									<!----><!----><span>取消</span>
+								</button>
+								<button
+									data-v-50548bfc=""
+									type="button"
+									class="btn-confirm byte-btn byte-btn--primary byte-btn--normal"
+								>
+									<!----><!----><span> 确定 </span>
+								</button>
+							</div>
+						</div>
+					</div>
+					<!---->
+				</div>
+			</div>
+		</div>
+	</body>
+    <script>
+        function removeTag(fragment) {
+            return (
+                // new DOMParser().parseFromString(fragment, 'text/html') 获取dom结构
+                new DOMParser().parseFromString(fragment, 'text/html').body.textContent || ''
+            )
+        }
+        const str = `<div
+			data-v-50548bfc=""
+			data-v-5b99e65b=""
+			data-transfer="true"
+			class="dislike-modal byte-modal v-transfer-dom"
+		>
+			<div
+				class="byte-modal__mask"
+				style="z-index: 1001; display: none"
+			></div>
+			<div
+				class="byte-modal__wrapper"
+				style="z-index: 1001; display: none"
+			>
+				<div
+					class="byte-modal__content"
+					style="width: 500px"
+				>
+					<!---->
+					<div class="byte-modal__body">
+						<div
+							data-v-50548bfc=""
+							class="container"
+						>
+							<div
+								data-v-50548bfc=""
+								class="title"
+							>
+								确定屏蔽该用户
+							</div>
+							<div
+								data-v-50548bfc=""
+								class="content"
+							>
+								<span data-v-50548bfc="">
+									屏蔽后，对方将不能关注你、与你产生任何互动，无法查看你的主页
+								</span>
+							</div>
+							<div
+								data-v-50548bfc=""
+								class="footer"
+							>
+								<button
+									data-v-50548bfc=""
+									type="button"
+									class="btn-cancel byte-btn byte-btn--default byte-btn--normal"
+								>
+									<!----><!----><span>取消</span>
+								</button>
+								<button
+									data-v-50548bfc=""
+									type="button"
+									class="btn-confirm byte-btn byte-btn--primary byte-btn--normal"
+								>
+									<!----><!----><span> 确定 </span>
+								</button>
+							</div>
+						</div>
+					</div>
+					<!---->
+				</div>
+			</div>
+		</div>`
+        console.log(removeTag(str))
+    </script>
+</html>
