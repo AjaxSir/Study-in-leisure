@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    div{
+        width: 440px;
+        height: 300px;
+        margin: 10px auto;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .content span{
+        transform: skew(-20deg);
+        --delay: 0;
+        animation-name: move;
+        animation-duration: 2s;
+        animation-fill-mode: forwards;
+        display: block;
+        opacity: 0;
+        transform: translateY(300px);
+        font-weight: bolder;
+        letter-spacing: .4em;
+        animation-delay: var(--delay);
+        font-size: 5em;
+        text-shadow: 1px 1px 1px red, 2px 2px 2px red, 3px 3px 3px red, 4px 4px 4px red;
+    }
+    @keyframes move {
+        0%{
+            transform: skew(-20deg) translateY(300px);
+            opacity: 0;
+        }
+        100%{
+            transform:  skew(-20deg) translateY(0px);
+            opacity: 1;
+        }
+    }
+</style>
+<body>
+    <div class="content">Hello World</div>
+</body>
+<script>
+    const content = document.querySelector('.content')
+    const text = content.innerHTML
+    content.innerHTML = ''
+    const result = text.split('').map((e, idx) => {
+        return `<span>${e}</span>`
+    })
+    content.innerHTML = result.join('')
+    const spans = document.querySelectorAll('.content span')
+    spans.forEach((span, idx) => {
+            span.style.setProperty('--delay', `${idx / 10}s`)
+        })
+</script>
+</html>
