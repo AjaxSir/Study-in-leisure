@@ -1,0 +1,173 @@
+﻿<!--
+ * @Date: 2024-08-30 15:01:07
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2024-08-30 16:24:03
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Document</title>
+	</head>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+            background-color: aquamarine;
+			perspective: 2000px;
+		}
+		.content {
+			position: relative;
+			width: 100vw;
+			height: 100vh;
+			
+            overflow: hidden;
+			
+		}
+		.main {
+			width:100%;
+			height: 100%;
+			position: absolute;
+			top:200px;
+			left: 0;
+			transform-style: preserve-3d;
+			overflow: auto;
+		}
+		.main img {
+            display: block;
+			--left: 0px;
+			--translateY: 0deg;
+			--scale: 0;
+			position: absolute;
+			top: 60px;
+			transform: translate3d();
+			left: calc(50% - 300px);
+			transform: translate3d(var(--left), 0 ,0) rotate3d(0, 1,0, var(--translateY));
+            transition: all 1s;
+			box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5); /* 添加阴影 */
+		}
+        .left,.right{
+            color: white;
+            font-size: 36px;
+            background-color: darkolivegreen;
+        }
+		.left {
+			position: absolute;
+			left: 10px;
+            z-index: 999;
+			top: calc(50% - 10px);
+		}
+		.right {
+			position: absolute;
+            z-index: 999;
+			right: 10px;
+			top: calc(50% - 10px);
+		}
+        .left:hover, .right:hover {
+            cursor: pointer;
+        }
+	</style>
+	<body>
+		<div class="content">
+			<div class="left"><</div>
+			<div class="main">
+				<img
+						src="https://picsum.photos/600/400"
+						alt=""
+					/>
+				<img
+						src="https://picsum.photos/600/400"
+						alt=""
+					/>
+				<img
+						src="https://picsum.photos/600/400"
+						alt=""
+					/>
+				<img
+						src="https://picsum.photos/600/400"
+						alt=""
+					/>
+				<img
+						src="https://picsum.photos/600/400"
+						alt=""
+					/>
+				<img
+						src="https://picsum.photos/600/400"
+						alt=""
+					/>
+				<img
+						src="https://picsum.photos/600/400"
+						alt=""
+					/>
+				<img
+						src="https://picsum.photos/600/400"
+						alt=""
+					/>
+				<img
+						src="https://picsum.photos/600/400"
+						alt=""
+					/>
+				<img
+						src="https://picsum.photos/600/400"
+						alt=""
+					/>
+			</div>
+			<div class="right">></div>
+		</div>
+	</body>
+	<script>
+		let currentidx =0;
+		const imgDiv = document.querySelectorAll('img');
+        const leftIcon = document.querySelector('.left')
+        const rightIcon = document.querySelector('.right')
+		function next() {
+			currentidx += 1;
+			if (currentidx >= imgDiv.length) {
+				currentidx = imgDiv.length - 1;
+				return;
+			}
+            setCurrent()
+		}
+
+        function setCurrent() {
+            imgDiv.forEach((e, idx) => {
+				e.style.zIndex = 1;
+                let left = Math.abs(idx - currentidx) * 400;
+                let opacity = Math.abs(idx - currentidx) ? 0.5 / Math.abs(idx - currentidx) : 1;
+                let Y =  Math.abs(idx - currentidx) * 20;
+				let scale = Math.abs(idx - currentidx) ? 0.8  : 1;
+                if (idx < currentidx) {
+                    e.style.setProperty('--left', `-${left}px`);
+                    e.style.setProperty('--translateY', `${Y}deg`);
+                } else {
+                    e.style.setProperty('--left', `${left}px`);
+                    e.style.setProperty('--translateY', `-${Y}deg`);
+                }   
+				if (idx === currentidx) {
+					e.style.zIndex = 99;
+				}
+				e.style.setProperty('--scale', scale);  
+                e.style.opacity = opacity;           
+            });
+            imgDiv[currentidx].style.setProperty('--left', '0px');
+            imgDiv[currentidx].style.setProperty('--translateY', '0deg');
+        }
+        setCurrent()
+		function prev() {
+			currentidx -= 1;
+			if (currentidx < 0) {
+				currentidx = 0;
+				return;
+			}
+            setCurrent()
+		}
+        leftIcon.addEventListener('click', prev)
+        rightIcon.addEventListener('click', next)
+        // setInterval(next, 5000);
+	</script>
+</html>
