@@ -1,7 +1,7 @@
 <!--
  * @Date: 2024-05-23 14:25:08
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-08-28 09:49:50
+ * @LastEditTime: 2024-09-02 14:08:52
  * @Description: 
 -->
 <script setup lang="ts">
@@ -9,7 +9,8 @@
 // import Responsive from './components/Responsive.vue'
 // import ClipPath from './components/clipPath.vue';
 // import AnimateSvg from './components/animateSvg.vue';
-import ProgressiveImg from './components/ProgressiveImage.vue';
+ // import ProgressiveImg from './components/ProgressiveImage.vue';
+ import Defer from './components/defer.vue'
 import { ref } from 'vue'
 import  useStore from './store/pinia'
 const { counterStore } = useStore()
@@ -24,7 +25,8 @@ const value = ref(0)
   <Responsive :value="value" /> -->
   <!-- <ClipPath /> -->
   <!-- <AnimateSvg /> -->
-  <ProgressiveImg />
+  <!-- <ProgressiveImg /> -->
+  <Defer />
   <!-- vuex -->
     <!-- <span>{{ store.state.counter.counter }}</span> -->
   <!-- <button @click="value+= 1">incres</button> -->
@@ -32,8 +34,8 @@ const value = ref(0)
   <!-- <button @click="store.dispatch('addCounterAction', 1)">incres counter</button> -->
 
     <!-- pinia -->
-    <span>{{ counterStore.count }}</span>
-    <button @click="counterStore.increment()">pinia add</button>
+    <!-- <span>{{ counterStore.count }}</span>
+    <button @click="counterStore.increment()">pinia add</button> -->
 </template>
 
 <style scoped>
