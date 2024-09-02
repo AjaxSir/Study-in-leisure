@@ -1,0 +1,53 @@
+﻿<!--
+ * @Date: 2024-09-02 10:48:42
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2024-09-02 11:09:30
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Document</title>
+	</head>
+	<style>
+		.content {
+			border: 1px solid black;
+			width: 100vw;
+			height: 200px;
+		}
+	</style>
+	<body>
+		<span> 阿斯顿大门口垃圾佛i啊回复留饭了解阿拉挥发分不拉屎 </span>
+		<div
+			class="content"
+			contenteditable
+		></div>
+	</body>
+	<script>
+		document.addEventListener('copy', (e) => {
+			// e.preventDefault();
+			navigator.clipboard.readText().then((text) => {
+				navigator.clipboard.writeText(`${text}, 打钱`);
+			});
+		});
+        const content = document.querySelector('.content')
+		document.addEventListener('paste', (e) => {
+            e.preventDefault();
+			if (e.clipboardData.files) {
+				const file = e.clipboardData.files[0];
+				const fileReader = new FileReader();
+				fileReader.readAsDataURL(file);
+				fileReader.onload = (event) => {
+					const img = document.createElement('img');
+                    img.src = event.target.result;
+                    content.appendChild(img);
+				};
+			}
+		});
+	</script>
+</html>
