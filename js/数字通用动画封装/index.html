@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button class='btn'>change</button> : <span class="num">0</span>
+</body>
+<script src="./index.js"></script>
+<script>
+    const btn = document.querySelector('.btn');
+    const num = document.querySelector('.num');
+    btn.addEventListener('click', function() {
+        animate(10000,-9000, 0, (val) => {
+            num.innerText = val.toFixed(2);
+        })
+    });
+</script>
+</html>
