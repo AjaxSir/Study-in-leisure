@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .content{
+        width: 200px;
+        height: 120px;
+        border: 3px solid black;
+        margin: 20px auto;
+        overflow: hidden;
+        position: relative;
+        
+    }
+    .dot-content{
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        width: 100%;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+    }
+    .dot-content .dot{
+        width: 5px;
+        height: 5px;
+        background-color: transparent;
+        border: 1px solid white;
+        border-radius: 50%;
+    }
+    .dot-content .active{
+        background-color: white;
+    }
+    .arrow{
+        width: 20px;
+        height: 20px;
+        background-color: rgba(0,0,0, .3);
+        color: white;
+        position: absolute;
+        top: calc(50% - 10px);
+        text-align: center;
+        line-height: 20px;
+        border-radius: 50%;
+    }
+    .left{
+        left: 10px;
+    }
+    .right{
+        right: 10px;
+    }
+    .main, .item{
+        width: 100%;
+        height: 100%;
+        background-color:aqua;
+        display: flex;
+        flex-shrink: 0;
+        transition: all 1s;
+        color: white;
+        text-align: center;
+        font-size: 20px;
+    }
+    .main{
+        /* transform: translateX(-100%); */
+    }
+    .item-2{
+        background-color: blue;
+    }
+    .item-3{
+        background-color: brown;
+    }
+    .item-4{
+        background-color: cadetblue;
+    }
+    .item-5{
+        background-color: burlywood;
+    }
+</style>
+<body>
+    <div class="content">
+        <div class="main">
+            <div class="item item-1">1</div>
+            <div class="item item-2">2</div>
+            <div class="item item-3">3</div>
+            <div class="item item-4">4</div>
+            <div class="item item-5">5</div>
+        </div>
+       <div class="dot-content">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+       </div>
+       <div class="arrow left"> < </div>
+       <div class="arrow right"> > </div>
+    </div>
+</body>
+<script>
+    let current = 0
+    
+    const dom = {
+        main: document.querySelector('.main'),
+        item: document.querySelectorAll('.item'),
+        dots: document.querySelectorAll('.dot'),
+        arrowLeft: document.querySelector('.arrow.left'),
+        arrowRight: document.querySelector('.arrow.right')
+    }
+    let count = dom.item.length
+    function init () {
+        const firstChild = dom.main.firstElementChild.cloneNode(true)
+        const lastChild = dom.main.lastElementChild.cloneNode(true)
+        dom.main.insertBefore(lastChild, dom.main.firstChild)
+        dom.main.appendChild(firstChild)
+        moveTo(1)
+    }
+    init()
+    function moveTo(idx) {
+        dom.main.style.transform = `translateX(-${idx * 100}%)`
+        current = idx
+    }
+    dom.arrowLeft.addEventListener('click', () => {
+        if (current === 1) {
+            dom.main.style.transition = 'none'
+            dom.main.style.transform = `translateX(-${(count + 1) * 100}%)`
+            dom.main.getBoundingClientRect()
+            dom.main.style.transition = 'all 1s'
+            current = count
+            moveTo(current)
+        } else {
+            current-= 1
+            moveTo(current)
+        }
+        dotActiveChange(current)
+    })
+    dom.arrowRight.addEventListener('click', () => {
+        if (current === count) {
+            dom.main.style.transform = `translateX(-${0 * 100}%)`
+            dom.main.style.transition = 'none'
+            dom.main.getBoundingClientRect()
+            dom.main.style.transition = 'all 1s'
+            current = 1
+            moveTo(current)
+        } else {
+            current+= 1
+            moveTo(current)
+        }
+        dotActiveChange(current)
+    })
+
+    function dotActiveChange(idx) {
+        dom.dots.forEach((e, i) => {
+            if (i+ 1 === idx) {
+                e.classList.add('active')
+            } else {
+                e.classList.remove('active')
+            }
+        });
+    }
+</script>
+</html>
