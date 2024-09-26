@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-09-25 11:22:01
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-09-25 11:36:42
+ * @LastEditTime: 2024-09-26 10:38:39
  * @Description:
  */
 async function task(idx) {
@@ -42,4 +42,7 @@ const { start, pause } = taskUtils(tasks)
 start()
 setTimeout(() => {
     pause()
+	setTimeout(() => {
+		start()
+	}, 3000)
 }, 3000);
