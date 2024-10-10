@@ -1,0 +1,92 @@
+<!--
+ * @Date: 2024-09-26 16:54:18
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2024-09-26 18:02:10
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body{
+        padding: 0;
+        margin: 0;
+        background-color: #141414;
+        width: 100vw;
+        height: 100vh;
+        
+    }
+    .content{
+        width: 222px;
+        height: 132px;
+        background: url('./eye.gif') #0ff no-repeat;
+        background-size: cover;
+        background-blend-mode: lighten;
+        position: relative;
+    }
+    .content::after{
+        content:  '';
+        width: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        background: url('./eye.gif') #f00 no-repeat;
+        background-blend-mode: lighten;
+        mix-blend-mode: darken;
+        margin-left: 10px;
+    }
+    .eye-content{
+        margin: 10px auto;
+        width: 500px;
+        height: 500px;
+        background: url('earth.jpg') no-repeat;
+        background-size: contain;
+        position: relative;
+    }
+    .eye{
+        width: 222px;
+        height: 132px;
+        position: absolute;
+        left: calc(50% - 111px);
+        bottom: 270px;
+        background: url('./eye.gif') no-repeat;
+        background-size: cover;
+        mix-blend-mode: multiply;
+        filter: contrast(3);
+    }
+
+    .eye-word{
+        width: 222px;
+        height: 132px;
+        background: url('./eye.gif') no-repeat;
+        background-size: cover;
+        color: transparent;
+        background-clip: text;
+        -webkit-background-clip: text;
+        filter: grayscale(1);
+        mix-blend-mode: light;
+    }
+</style>
+<body>
+    <div class="content">
+
+    </div>
+    <div class="eye-content">
+        <div class="eye"></div>
+    </div>
+
+    <div class="eye-word">
+        Welcome to the world of dreams
+        Welcome to the world of dreams
+        Welcome to the world of dreams
+
+        Welcome to the world of dreams
+        Welcome to the world of dreams
+    </div>
+</body>
+</html>
