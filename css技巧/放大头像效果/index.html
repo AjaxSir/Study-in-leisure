@@ -1,0 +1,65 @@
+<!--
+ * @Date: 2024-10-10 10:50:40
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2024-10-10 14:14:50
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+.img{
+    --w: 200px;
+    --h: 200px;
+
+    --c1: #c02942;
+    --c2: #ecd078;
+
+    --b: 5px;
+
+    --f: 1;
+
+    --bgOptions: content-box no-repeat center/calc(100% / var(--f)) 100%;
+    /* outline-offset:  是基于原本大小 所以要除一个比例 因为这里是负数 所以调换了顺序; 原本应是 (宽度 * 比例 - 宽度) / 2 / 比例 */
+    --shark: calc((var(--w) / var(--f) - var(--w)) / 2 -  var(--b)); 
+    
+    width: var(--w);
+    height: var(--h);
+    
+    padding-top: 100px;
+    cursor: pointer;
+    transition: all .5s;
+    border-radius: 0 0 999px 999px;
+    outline: var(--b) solid var(--c1);
+    outline-offset: var(--shark);
+    transform: scale(var(--f));
+    /* background: linear-gradient(#000 0 0) no-repeat center calc(0px - var(--shark)) / calc(100% / var(--f)) 50%; */
+    /* 99% 主要作用是消除边缘锯齿 */
+    background: radial-gradient(circle closest-side, 
+    var(--c2) calc(99% - var(--b)), 
+    var(--c1) calc(100% - var(--b)),
+    var(--c1) 99%, 
+    transparent 100%
+     ) var(--bgOptions);
+     
+    -webkit-mask:linear-gradient(#000 0 0) no-repeat center calc(0px - var(--shark) + 1px) / calc(100% / var(--f) - (2 * var(--b) + 2px)) 50%,  radial-gradient(circle closest-side, black 99%, transparent) var(--bgOptions);
+}
+.img:hover{
+    --f: 1.35;
+    
+}
+</style>
+<body>
+    <img class="img" src="./avatar-1.png" alt="">
+</body>
+</html>
