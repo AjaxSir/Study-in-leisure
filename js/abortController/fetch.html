@@ -1,0 +1,56 @@
+<!--
+ * @Date: 2024-11-04 16:01:39
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2024-11-04 16:37:02
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="file" id="file" name="file" id="">
+    <button id="upload">upload</button>
+    <button id="cancel">cancel</button>
+</body>
+<script>
+    function upload(file) {
+        const controller = new AbortController()
+        const data = fetch('/upload', {
+            method: 'POST',
+            body: {
+                file
+            },
+            signal: controller.signal
+        })
+        return { data, controller }
+    }
+
+    const uploadBtn = document.getElementById('upload')
+    const cancelBtn = document.getElementById('cancel')
+
+    uploadBtn.addEventListener('click', async () => {
+        const file = document.getElementById('file').files[0]
+        if (!file) {
+            return alert('Please select a file.')
+        }
+        const { data, controller } = upload(file)  
+        data.then(() => {
+            res => {
+                alert('upload')
+            }
+        }).catch(() => {
+            console.log('upload error')
+        })
+        window.currentCpntroller = controller
+    })
+
+    cancelBtn.addEventListener('click', () => {
+        window.currentCpntroller && window.currentCpntroller.abort()
+    })
+
+</script>
+</html>

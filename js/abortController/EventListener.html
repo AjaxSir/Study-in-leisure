@@ -1,0 +1,28 @@
+<!--
+ * @Date: 2024-11-04 15:53:02
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2024-11-04 15:55:07
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    const controller = new AbortController()
+    window.addEventListener('resize', () => {
+        console.log('resize')
+    }, {
+        signal: controller.signal
+    })
+    setTimeout(() => {
+        controller.abort()
+    }, 3000)
+</script>
+</html>
