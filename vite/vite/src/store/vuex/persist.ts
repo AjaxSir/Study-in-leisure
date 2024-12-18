@@ -5,7 +5,7 @@ export default (store) => {
     })
 
     try {
-        const storage = JSON.parse(localStorage.getItem(KEY_VUEX))
+        const storage = JSON.parse(localStorage.getItem(KEY_VUEX)!)
         console.log(storage, 'storage')
         if(storage) {
             store.replaceState(storage)

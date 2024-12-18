@@ -13,7 +13,7 @@ export default (context:any) => {
     })
 
     try {
-        const storage = JSON.parse(localStorage.getItem(KEY))
+        const storage = JSON.parse(localStorage.getItem(KEY)!)
         console.log(storage, 'storage')
         if(storage) {
             context.store.$patch(storage)

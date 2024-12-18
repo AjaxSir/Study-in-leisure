@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "element-plus": "^2.9.0",
     "lottie-web": "^5.12.2",
     "pinia": "^2.2.2",
     "vue": "^3.4.21",
