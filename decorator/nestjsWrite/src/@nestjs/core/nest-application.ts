@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-12-19 11:40:10
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-20 11:22:51
+ * @LastEditTime: 2024-12-20 14:52:22
  * @Description: 
  */
 import { Logger } from './log'
@@ -42,9 +42,9 @@ export class NestApplication {
        Logger.log('NestApplication started successful', 'NestApplication')
     }
     private paramsResolve(req, res, nest, methodName, controllerPrototype) {
-        const paramsList = Reflect.getMetadata('params', controllerPrototype, methodName)
+        let paramsList = Reflect.getMetadata('params', controllerPrototype, methodName)
         // 排序的原因 装饰器从右到左 而参数是顺序传入
-        return paramsList.sort((a, b) => a.paramIndex - b.paramIndex).map(e => {
+        const result =  paramsList.map(e => {
             switch (e.name) {
                 case "Request":
                     return req
@@ -54,6 +54,7 @@ export class NestApplication {
                     return null
             }
         })
+        return result
     }
     async listen(port = 3000) {
         await this.init()

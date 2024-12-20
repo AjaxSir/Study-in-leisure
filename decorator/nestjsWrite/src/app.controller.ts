@@ -9,8 +9,8 @@ import { Controller, Get, Request, Req } from '@nestjs/common'
 @Controller()
 export class AppController {
     @Get('cats')
-    index(@Request() req, @Req() req1) {
-        console.log(req.url, req1.method)
+    index(@Request() req, age: number, @Req() req1) {
+        console.log(req.url, req1.method, 'age=========', age)
         return 'Hello World!'
     }
 }

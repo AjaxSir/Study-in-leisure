@@ -9,7 +9,8 @@ const createParamDecorator = (name: string) => {
         // 这样做的目的是保证在Controller中可以直接通过参数名来获取参数值
         // 参数装饰器从右到左 1 -》 0
         const exitingParam = Reflect.getMetadata('params',target, propertyKey) || []
-        exitingParam.push({ name, paramIndex })
+        // exitingParam.push({ name, paramIndex }) 这样处理不了没有带装饰器的参数
+        exitingParam[paramIndex] = { name, paramIndex }
         console.log(exitingParam, 'exitingParam')
         Reflect.defineMetadata('params',exitingParam, target, propertyKey)
     }
