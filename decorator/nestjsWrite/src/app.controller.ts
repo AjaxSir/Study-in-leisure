@@ -1,15 +1,16 @@
 /*
  * @Date: 2024-12-19 11:04:21
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-19 15:54:19
+ * @LastEditTime: 2024-12-20 11:23:34
  * @Description: 
  */
-import { Controller, Get } from '@nestjs/common'
+import { Controller, Get, Request, Req } from '@nestjs/common'
 
 @Controller()
 export class AppController {
     @Get('cats')
-    index() {
+    index(@Request() req, @Req() req1) {
+        console.log(req.url, req1.method)
         return 'Hello World!'
     }
 }

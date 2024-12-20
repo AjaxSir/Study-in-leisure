@@ -1,8 +1,7 @@
-import { join } from 'path';
 /*
  * @Date: 2024-12-19 11:40:10
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-19 17:03:51
+ * @LastEditTime: 2024-12-20 11:22:51
  * @Description: 
  */
 import { Logger } from './log'
@@ -33,13 +32,28 @@ export class NestApplication {
                 const routerPath = path.posix.join('/', prefix, _path)
                 Logger.log(`Mapped { ${routerPath} methodName: ${ methodName }}`, '[RoutesResolver]')
                 this.app[httpMethod.toLocaleLowerCase()](routerPath, async (req: Request, res: Response, nest: NextFunction) => {
-                    const result = await method.call(controller)
+                    const args = this.paramsResolve(req, res, nest, methodName, controller)
+                    const result = await method.call(controller, ...args) // call 是分别传入 apply 是数组
                     res.send(result)
                 })
             }
         }
        }
        Logger.log('NestApplication started successful', 'NestApplication')
+    }
+    private paramsResolve(req, res, nest, methodName, controllerPrototype) {
+        const paramsList = Reflect.getMetadata('params', controllerPrototype, methodName)
+        // 排序的原因 装饰器从右到左 而参数是顺序传入
+        return paramsList.sort((a, b) => a.paramIndex - b.paramIndex).map(e => {
+            switch (e.name) {
+                case "Request":
+                    return req
+                case "Req":
+                    return req
+                default:
+                    return null
+            }
+        })
     }
     async listen(port = 3000) {
         await this.init()
