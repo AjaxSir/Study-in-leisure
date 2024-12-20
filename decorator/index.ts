@@ -21,6 +21,7 @@ const paramDecorator: ParameterDecorator = (target: any, key: string| Symbol| un
 }
 // 执行顺序 调用的先后顺序 类控制器最后执行 
 // 方法装饰器, 参数装饰器，属性装饰器 由近到远 , 参数装饰器从右到左
+// classDecorators 中的target 是表示一个类  而其他装饰器中的target则是表示的是类的原型
 @classDecorators
 class Controller {
     @ProtoDecorator

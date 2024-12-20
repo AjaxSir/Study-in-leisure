@@ -1,5 +1,7 @@
-export const Get = ():MethodDecorator => {
-    return (target: Function, propertyKey: string, desc: PropertyDescriptor) => {
-        
+import 'reflect-metadata'
+export const Get = (path: string = ''):MethodDecorator => {
+    return (target: Object, propertyKey: string | Symbol, desc: PropertyDescriptor): any => {
+        Reflect.defineMetadata('path', path, desc.value)       
+        Reflect.defineMetadata('method', 'GET', desc.value)       
     }
 }

@@ -4,7 +4,7 @@
  * @LastEditTime: 2024-12-19 11:47:23
  * @Description: 
  */
-import { NestFactory } from './@nestjs/core'
+import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.moddlue'
 async function bootstrap() {
     const app = await NestFactory.create(AppModule)
