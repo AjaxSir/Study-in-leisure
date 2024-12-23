@@ -2,7 +2,7 @@
 /*
  * @Date: 2024-12-19 11:40:10
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-23 11:26:43
+ * @LastEditTime: 2024-12-23 16:03:20
  * @Description: 
  */
 import { Logger } from './log'
@@ -42,13 +42,23 @@ export class NestApplication {
                     this.app[httpMethod.toLocaleLowerCase()](routerPath, async (req: Request, res: Response, nest: NextFunction) => {
                         const args = this.paramsResolve(req, res, nest, methodName, controller)
                         const result = await method.call(controller, ...args) // call 是分别传入 apply 是数组
-                        res.send(result)
+                        const responseMetaData = this.getResponseMetaData(controller, methodName)
+                        if (!responseMetaData || (responseMetaData && responseMetaData?.data?.passthrough)) {
+                            // 使用了response res 装饰器 那么nest则不负责返回 自己使用返回 如果未使用 那么则挂起
+                            res.send(result)
+                        }
                     })
                 }
             }
         }
         Logger.log('NestApplication started successful', 'NestApplication')
     }
+
+    private getResponseMetaData(controller, methodName) {
+        let paramsList = Reflect.getMetadata('params', controller, methodName) ?? []
+        return paramsList.filter(Boolean).find(e => e.name === 'Responese' || e.name === 'Res')
+    }   
+
     private paramsResolve(req: any, res, nest, methodName, controllerPrototype) {
         let paramsList = Reflect.getMetadata('params', controllerPrototype, methodName) ?? []
         console.log('paramsList', paramsList)
@@ -71,6 +81,9 @@ export class NestApplication {
                     return e.data ? req.params[e.data] : req.params
                 case 'Body':
                     return e.data ? req.body[e.data] : req.body
+                case 'Response':
+                case 'Res':
+                    return res;    
                 default:
                     return null
             }

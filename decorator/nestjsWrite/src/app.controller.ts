@@ -7,7 +7,7 @@
 import {
     Controller,
     Get, Post,
-    Request, Req, Query, Headers, Sessions, Ip, Param, Body
+    Request, Req, Query, Headers, Sessions, Ip, Param, Body, Response, Res
 } from '@nestjs/common'
 
 @Controller()
@@ -62,5 +62,13 @@ export class AppController {
         console.log(`age`, age)
         return `${name} is ${age} years old`;
 
+    }
+
+
+    @Get('response')
+    response(@Response({ passthrough: true }) response: any) {
+        // 使用了response res 装饰器 那么nest则不负责返回 自己使用返回 如果未使用 那么则挂起
+        console.log(response)
+        return 'response'
     }
 }
