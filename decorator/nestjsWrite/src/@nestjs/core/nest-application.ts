@@ -2,7 +2,7 @@
 /*
  * @Date: 2024-12-19 11:40:10
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-23 11:05:03
+ * @LastEditTime: 2024-12-23 11:26:43
  * @Description: 
  */
 import { Logger } from './log'
@@ -13,10 +13,12 @@ import path from 'path'
 export class NestApplication {
     private readonly app: Express = express()
     constructor(protected readonly module: any) {
+        this.app.use(express.json()) // 把json格式的数据放在req.body上
+        this.app.use(express.urlencoded({ extended: true })) // 把form表单格式的数据放在body上
         // this.module = module
     }
 
-    use(middleware:any) {
+    use(middleware: any) {
         this.app.use(middleware)
     }
     // 配置路由等
@@ -48,7 +50,8 @@ export class NestApplication {
         Logger.log('NestApplication started successful', 'NestApplication')
     }
     private paramsResolve(req: any, res, nest, methodName, controllerPrototype) {
-        let paramsList = Reflect.getMetadata('params', controllerPrototype, methodName) || []
+        let paramsList = Reflect.getMetadata('params', controllerPrototype, methodName) ?? []
+        console.log('paramsList', paramsList)
         // 排序的原因 装饰器从右到左 而参数是顺序传入
         const result = paramsList.map(e => {
             switch (e.name) {
@@ -64,8 +67,10 @@ export class NestApplication {
                     return e.data ? req.session[e.data] : req.session
                 case 'Ip':
                     return req.ip;
-                    case 'Param':
-                        return e.data ? req.params[e.data] : req.params    
+                case 'Param':
+                    return e.data ? req.params[e.data] : req.params
+                case 'Body':
+                    return e.data ? req.body[e.data] : req.body
                 default:
                     return null
             }
