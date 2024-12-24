@@ -1,19 +1,29 @@
 /*
  * @Date: 2024-12-19 11:04:21
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-23 11:22:49
+ * @LastEditTime: 2024-12-24 14:24:34
  * @Description: 
  */
 import {
     Controller,
     Get, Post,
-    Request, Req, Query, Headers, Sessions, Ip, Param, Body, Response, Res
+    Request, Req, Query, Headers, Sessions, Ip, Param, Body, Response, Res, Inject
 } from '@nestjs/common'
+import { LoggerService, UseValueService } from './log.service'
 
 @Controller()
 export class AppController {
+
+    constructor(@Inject('logService') private logService: LoggerService,
+        private tokenService: UseValueService
+    ) {
+
+    }
+
     @Get('cats')
     index(@Request() req, age: number, @Req() req1) {
+        this.logService.log('index')
+        this.tokenService.log('index')
         console.log(req.url, req1.method, 'age=========', age)
         return 'Hello World!'
     }

@@ -2,7 +2,7 @@
 /*
  * @Date: 2024-12-19 11:40:10
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-23 16:03:20
+ * @LastEditTime: 2024-12-24 14:45:34
  * @Description: 
  */
 import { Logger } from './log'
@@ -10,6 +10,7 @@ import 'express-session'
 import express, { Express, Request, Response, NextFunction } from 'express'
 import 'reflect-metadata'
 import path from 'path'
+import { LoggerService, UseValueService } from '../../log.service'
 export class NestApplication {
     private readonly app: Express = express()
     constructor(protected readonly module: any) {
@@ -21,13 +22,31 @@ export class NestApplication {
     use(middleware: any) {
         this.app.use(middleware)
     }
+
+    private resolveInjectableDependencies(controller) {
+        const dependencies = Reflect.getMetadata('inject-class', controller)
+        console.log('构造函数添加Inject ', dependencies)
+
+        const allDependencies = Reflect.getMetadata('design:paramtypes', controller)
+        console.log('全部构造函数需要注入的' , allDependencies)
+
+        return allDependencies.map((dependency, idx) => {
+                    if (idx === 0) {
+                        return new LoggerService()
+                    } else if (idx === 1) {
+                        return new UseValueService()
+                    } 
+                })
+    }
+
     // 配置路由等
     async init() {
         // 获取controllers 数组信息
         // module 这里就是已经经过装饰器修饰的 AppModule 
         const controllers = Reflect.getMetadata('controllers', this.module)
         for (const Controller of controllers) {
-            const controller = new Controller()
+            const dependencies = this.resolveInjectableDependencies(Controller)
+            const controller = new Controller(...dependencies)
             // 获取方法信息
             const prefix = Reflect.getMetadata('prefix', Controller) || '/'
             Logger.log(`${Controller.name} {${prefix}}`, 'RoutesResolver')
