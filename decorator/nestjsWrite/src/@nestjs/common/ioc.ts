@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-12-23 17:47:59
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-24 10:15:10
+ * @LastEditTime: 2024-12-24 15:32:18
  * @Description: 
  */
 import 'reflect-metadata'
@@ -40,7 +40,7 @@ class Car {
 // 通过IOC依赖注入容器
 
 class DIContainer {
-    private instances: Map<string, any> = new Map()
+     instances: Map<string, any> = new Map()
     register <T>(name: string, Service: new (...args) => T) {
         this.instances.set(name, Service)
     }
@@ -51,16 +51,12 @@ class DIContainer {
         const Instances = metaData.map(e => {
             return this.resolve(e.name) // 递归解析依赖
         })
-        console.log(metaData, '=================')
-
         return new Service(...Instances)
     }
 }
 
 const di = new DIContainer()
-di.register('Engine', Engine)
-di.register('Car', Car)
 
-const car = di.resolve('Car')
-
-car.drive();
+export {
+    di
+}

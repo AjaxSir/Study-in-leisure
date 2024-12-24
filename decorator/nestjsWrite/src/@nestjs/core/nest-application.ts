@@ -2,7 +2,7 @@
 /*
  * @Date: 2024-12-19 11:40:10
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-24 14:45:34
+ * @LastEditTime: 2024-12-24 15:41:12
  * @Description: 
  */
 import { Logger } from './log'
@@ -11,6 +11,7 @@ import express, { Express, Request, Response, NextFunction } from 'express'
 import 'reflect-metadata'
 import path from 'path'
 import { LoggerService, UseValueService } from '../../log.service'
+import { di } from '@nestjs/common'
 export class NestApplication {
     private readonly app: Express = express()
     constructor(protected readonly module: any) {
@@ -30,13 +31,7 @@ export class NestApplication {
         const allDependencies = Reflect.getMetadata('design:paramtypes', controller)
         console.log('全部构造函数需要注入的' , allDependencies)
 
-        return allDependencies.map((dependency, idx) => {
-                    if (idx === 0) {
-                        return new LoggerService()
-                    } else if (idx === 1) {
-                        return new UseValueService()
-                    } 
-                })
+        return allDependencies.map((dependency) =>  di.resolve(dependency.name))
     }
 
     // 配置路由等
@@ -44,6 +39,27 @@ export class NestApplication {
         // 获取controllers 数组信息
         // module 这里就是已经经过装饰器修饰的 AppModule 
         const controllers = Reflect.getMetadata('controllers', this.module)
+
+        const providers = Reflect.getMetadata('providers', this.module)
+        for (const provider of providers) {
+            const types = typeof provider
+            switch (types) {
+                case 'function':
+                    const isInjectable = Reflect.getMetadata('injectable', provider)
+                    isInjectable && di.register(provider.name, provider)
+                    break;
+                case 'object':
+                    if (provider.provide && provider.useValue) {
+                        const isInjectable = Reflect.getMetadata('injectable', provider.useValue)
+                        isInjectable && di.register(provider.useValue.name, provider.useValue)
+                    }
+                    // 注入
+                    break;
+                default:
+                    break;
+            }
+        }
+        console.log(di.instances, '')
         for (const Controller of controllers) {
             const dependencies = this.resolveInjectableDependencies(Controller)
             const controller = new Controller(...dependencies)
