@@ -4,9 +4,10 @@
  * @LastEditTime: 2024-12-25 15:44:02
  * @Description: 
  */
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToMany, JoinTable } from 'typeorm';
 import { Profile } from './Profile';
 import { Order } from './Order';
+import { Role } from './Role';
 
 @Entity()
 export class User {
@@ -43,6 +44,10 @@ export class User {
     // @OneToOne(() => Profile, profile => profile.user)
     // profile: Profile
 
-    @OneToMany(() => Order, order => order.user, { cascade: true })
-    orders: Order[]
+    // @OneToMany(() => Order, order => order.user, { cascade: true })
+    // orders: Order[]
+
+    @ManyToMany(() => Role, (role) => role.users, { cascade: true } )
+    @JoinTable()
+    roles: Role[]
 }

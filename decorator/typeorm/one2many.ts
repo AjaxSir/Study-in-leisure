@@ -3,7 +3,7 @@ import 'reflect-metadata'
 import { User } from './entity/User'
 import { Profile } from './entity/Profile'
 import { Order } from './entity/Order'
-import { Like } from 'typeorm'
+import { Like, MoreThan } from 'typeorm'
 AppDataSource.initialize().then(async () => {
     // const newUser = new User()
     // newUser.username = 'onetomany2'
@@ -48,8 +48,17 @@ AppDataSource.initialize().then(async () => {
         username: Like(`%${name}%`)
     })
 
+    // 查找至少买过一个商品的用户
+    const result4 = await AppDataSource.manager.findBy(User, {
+        orders:{
+            amount: MoreThan(0)
+        }
+    })
+
+
     console.log('result========', result, '\n')
     console.log('result2========', result2, '\n')
     console.log('result3========', result3, '\n')
+    console.log('result4========', result4, '\n')
 
 }).finally(() => process.exit(0))

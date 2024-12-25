@@ -14,6 +14,6 @@ export class Order {
     @Column()
     price: number
 
-    @ManyToOne(() => User, (user) => user.orders)
-    user: User
+    // @ManyToOne(() => User, (user) => user.orders)
+    // user: User
 }
