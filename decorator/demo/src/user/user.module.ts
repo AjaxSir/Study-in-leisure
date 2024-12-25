@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-12-10 17:52:11
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-11 16:35:05
+ * @LastEditTime: 2024-12-24 16:26:50
  * @Description: 
  */
 import { Module, NestMiddleware, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
@@ -18,6 +18,7 @@ export class UserModule implements NestModule {
     customer.apply(Logger).forRoutes({
       path: '/v1/user',
       method: RequestMethod.ALL,
-    });
+    })
+    // .apply(Logger).exclude()
   }
 }
