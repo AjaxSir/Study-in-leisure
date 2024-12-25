@@ -1,10 +1,11 @@
 /*
  * @Date: 2024-12-25 09:56:53
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-25 10:24:13
+ * @LastEditTime: 2024-12-25 14:27:04
  * @Description: 
  */
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Profile } from './Profile';
 
 @Entity()
 export class User {
@@ -35,6 +36,9 @@ export class User {
     @Column({ type: 'enum', enum: ['admin', 'mannager', 'user', 'vistor'], default: "vistor" })
     role: string
 
-    @Column({ type:'int', unsigned: true }) // 不能为负数
+    @Column({ type:'int', unsigned: true, default: 10 }) // 不能为负数
     money: number
+
+    @OneToOne(() => Profile, profile => profile.user)
+    profile: Profile
 }
