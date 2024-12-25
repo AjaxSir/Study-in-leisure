@@ -1,11 +1,12 @@
 /*
  * @Date: 2024-12-25 09:56:53
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-25 14:27:04
+ * @LastEditTime: 2024-12-25 15:44:02
  * @Description: 
  */
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { Profile } from './Profile';
+import { Order } from './Order';
 
 @Entity()
 export class User {
@@ -39,6 +40,9 @@ export class User {
     @Column({ type:'int', unsigned: true, default: 10 }) // 不能为负数
     money: number
 
-    @OneToOne(() => Profile, profile => profile.user)
-    profile: Profile
+    // @OneToOne(() => Profile, profile => profile.user)
+    // profile: Profile
+
+    @OneToMany(() => Order, order => order.user, { cascade: true })
+    orders: Order[]
 }

@@ -7,6 +7,7 @@
 import { DataSource } from 'typeorm';
 import {User} from './entity/User'
 import {Profile} from './entity/Profile'
+import { Order } from './entity/Order';
 export const AppDataSource = new DataSource({
     type: 'mysql',
     host: '47.113.199.106',
@@ -14,7 +15,7 @@ export const AppDataSource = new DataSource({
     username: 'remote',
     password: '123456',
     database: 'nest',
-    entities: [User, Profile],
+    entities: [User, Profile, Order],
     synchronize: true, // Automatically synchronize the database schema with your entities.
     logging: true
 })
