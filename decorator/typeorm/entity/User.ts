@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-12-25 09:56:53
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-25 15:44:02
+ * @LastEditTime: 2024-12-26 11:12:48
  * @Description: 
  */
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToMany, JoinTable } from 'typeorm';
@@ -50,4 +50,10 @@ export class User {
     @ManyToMany(() => Role, (role) => role.users, { cascade: true } )
     @JoinTable()
     roles: Role[]
+
+    @Column()
+    avatar: string
 }
+// ts-node ./node_modules/typeorm/cli migration:generate ./migrations/addAvator -d ./data-source.ts  根据实体变化生成迁移文件
+// ts-node ./node_modules/typeorm/cli migration:run  -d ./data-source.ts  执行迁移文件 会在数据库生成一个关于迁移的migrations表
+// ts-node ./node_modules/typeorm/cli migration:revert  -d ./data-source.ts  回滚上一次执行的迁移

@@ -25,6 +25,7 @@ export const AppDataSource = new DataSource({
     password: MYSQL_HOST_PASSWORD,
     database: MYSQL_DATABASE_NAME,
     entities: [User, Role, Category],
-    synchronize: true, // Automatically synchronize the database schema with your entities.
+    synchronize: false, // Automatically synchronize the database schema with your entities.
+    migrations: ['./migrations/*.ts'], // 迁移文件
     logging: true
 })

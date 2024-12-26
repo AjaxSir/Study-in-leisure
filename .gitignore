@@ -20,3 +20,4 @@ rProfiling/*
 /js/*/images/*
 
 .env
+**/migrations/*
