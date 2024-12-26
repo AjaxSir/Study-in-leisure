@@ -18,3 +18,5 @@ contract
 
 rProfiling/*
 /js/*/images/*
+
+.env

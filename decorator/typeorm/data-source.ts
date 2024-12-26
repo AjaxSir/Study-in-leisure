@@ -10,13 +10,20 @@ import {Profile} from './entity/Profile'
 import { Order } from './entity/Order';
 import { Role } from './entity/Role';
 import { Category } from './entity/Category'
+import {
+    MYSQL_HOST,
+    MYSQL_HOST_PORT,
+    MYSQL_HOST_USER,
+    MYSQL_HOST_PASSWORD,
+    MYSQL_DATABASE_NAME,
+} from './config'
 export const AppDataSource = new DataSource({
     type: 'mysql',
-    host: '47.113.199.106',
-    port: 3306,
-    username: 'remote',
-    password: '123456',
-    database: 'nest',
+    host: MYSQL_HOST,
+    port: +MYSQL_HOST_PORT,
+    username: MYSQL_HOST_USER,
+    password: MYSQL_HOST_PASSWORD,
+    database: MYSQL_DATABASE_NAME,
     entities: [User, Role, Category],
     synchronize: true, // Automatically synchronize the database schema with your entities.
     logging: true
