@@ -9,6 +9,7 @@ import {User} from './entity/User'
 import {Profile} from './entity/Profile'
 import { Order } from './entity/Order';
 import { Role } from './entity/Role';
+import { Category } from './entity/Category'
 export const AppDataSource = new DataSource({
     type: 'mysql',
     host: '47.113.199.106',
@@ -16,7 +17,7 @@ export const AppDataSource = new DataSource({
     username: 'remote',
     password: '123456',
     database: 'nest',
-    entities: [User, Role],
+    entities: [User, Role, Category],
     synchronize: true, // Automatically synchronize the database schema with your entities.
     logging: true
 })
