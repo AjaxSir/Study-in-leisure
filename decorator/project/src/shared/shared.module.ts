@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-12-26 16:14:59
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-27 14:06:27
+ * @LastEditTime: 2024-12-30 11:44:58
  * @Description: 
  */
 import { Global, Module } from '@nestjs/common';
@@ -11,6 +11,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { UserService } from './services/user.service'
 import { MySqlBaseService } from './services/mysql-base.service'
 import { User } from  '../shared/entities/User'
+import { IsUserNameUniqueConstructor } from './dtos/createUser.dto' 
 @Global()
 @Module({
     

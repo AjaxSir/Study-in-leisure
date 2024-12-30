@@ -21,3 +21,4 @@ rProfiling/*
 
 .env
 **/migrations/*
+/dist

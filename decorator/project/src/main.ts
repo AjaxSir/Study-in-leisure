@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-12-26 15:42:14
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-26 17:46:28
+ * @LastEditTime: 2024-12-30 10:29:07
  * @Description: 
  */
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -9,9 +9,10 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser'
 import * as session from 'express-session'
+import { ValidationPipe } from '@nestjs/common'
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  await app.listen(3001);
+  
   app.use(cookieParser())
   app.use(session({
     secret: 'secret key',
@@ -21,5 +22,8 @@ async function bootstrap() {
       maxAge: 60 * 60 * 1000, // session 1 hour
     },
   }))
+  app.useGlobalPipes(new ValidationPipe({ transform: true })) // 将dto普通对象转为实例
+
+  await app.listen(3001);
 }
 bootstrap();
