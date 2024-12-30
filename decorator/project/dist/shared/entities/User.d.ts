@@ -3,6 +3,7 @@ export declare class User {
     username: string;
     password: string;
     createdAt: Date;
+    get contract(): string;
     updatedAt: Date;
     deletedAt: Date;
     isActive: boolean;

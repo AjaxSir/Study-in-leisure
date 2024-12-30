@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
+const swagger_1 = require("@nestjs/swagger");
 const user_service_1 = require("../../shared/services/user.service");
 let UserController = class UserController {
     constructor(userService) {
@@ -30,6 +31,7 @@ __decorate([
 ], UserController.prototype, "findAll", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('admin/user'),
+    (0, swagger_1.ApiTags)('admin/users'),
     __metadata("design:paramtypes", [user_service_1.UserService])
 ], UserController);
 //# sourceMappingURL=user.controller.js.map

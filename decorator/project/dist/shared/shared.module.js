@@ -13,6 +13,7 @@ const configuare_service_1 = require("./services/configuare.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_service_1 = require("./services/user.service");
 const User_1 = require("../shared/entities/User");
+const user_validator_1 = require("./validator/user-validator");
 let SharedModule = class SharedModule {
 };
 exports.SharedModule = SharedModule;
@@ -35,8 +36,8 @@ exports.SharedModule = SharedModule = __decorate([
             }),
             typeorm_1.TypeOrmModule.forFeature([User_1.User])
         ],
-        providers: [configuare_service_1.ConfiguareService, user_service_1.UserService],
-        exports: [configuare_service_1.ConfiguareService, user_service_1.UserService],
+        providers: [configuare_service_1.ConfiguareService, user_service_1.UserService, user_validator_1.IsUserNameUniqueConstructor],
+        exports: [configuare_service_1.ConfiguareService, user_service_1.UserService, user_validator_1.IsUserNameUniqueConstructor],
     })
 ], SharedModule);
 //# sourceMappingURL=shared.module.js.map

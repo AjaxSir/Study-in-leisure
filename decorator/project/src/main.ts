@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-12-26 15:42:14
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-30 10:29:07
+ * @LastEditTime: 2024-12-30 14:58:47
  * @Description: 
  */
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -10,6 +10,7 @@ import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser'
 import * as session from 'express-session'
 import { ValidationPipe } from '@nestjs/common'
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   
@@ -23,6 +24,16 @@ async function bootstrap() {
     },
   }))
   app.useGlobalPipes(new ValidationPipe({ transform: true })) // 将dto普通对象转为实例
+
+  // 配置swagger
+  const options = new DocumentBuilder()
+  .setTitle('cms api')
+  .addTag('cms')
+  .setDescription('cms api 接口文档')
+  .build()
+
+  const document = SwaggerModule.createDocument(app, options)
+  SwaggerModule.setup('/docs-api', app, document)
 
   await app.listen(3001);
 }

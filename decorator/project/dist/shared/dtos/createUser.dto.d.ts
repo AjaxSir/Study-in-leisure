@@ -1,12 +1,3 @@
-import { ValidatorConstraintInterface, ValidationArguments } from 'class-validator';
-import { Repository } from 'typeorm';
-import { User } from '../entities/User';
-export declare class IsUserNameUniqueConstructor implements ValidatorConstraintInterface {
-    private readonly user;
-    constructor(user: Repository<User>);
-    validate(value: any, validationArguments?: ValidationArguments): Promise<boolean>;
-    defaultMessage?(validationArguments?: ValidationArguments): string;
-}
 export declare class CreateUserDto {
     username: string;
     password: string;
@@ -14,6 +5,8 @@ export declare class CreateUserDto {
     money: number;
     role: string;
 }
-export declare class UpdateUserDto extends CreateUserDto {
+declare const UpdateUserDto_base: import("@nestjs/common").Type<Partial<CreateUserDto>>;
+export declare class UpdateUserDto extends UpdateUserDto_base {
     id: number;
 }
+export {};
