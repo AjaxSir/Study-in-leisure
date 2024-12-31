@@ -1,0 +1,5 @@
+{
+    "minLength": "The {field} must at least {minLength} characters",
+    "maxLength": "The {field} must not exceed {maxLength} characters",
+    "required": "The {field} is required"
+}

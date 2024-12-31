@@ -1,7 +1,8 @@
+import { I18n } from 'nestjs-i18n';
 /*
  * @Date: 2024-12-26 15:42:14
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-30 17:25:16
+ * @LastEditTime: 2024-12-31 14:45:38
  * @Description: 
  */
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -11,6 +12,7 @@ import * as cookieParser from 'cookie-parser'
 import * as session from 'express-session'
 import { ValidationPipe } from '@nestjs/common'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
+import { I18nValidationPipe, I18nValidationExceptionFilter } from 'nestjs-i18n'
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   
@@ -23,8 +25,9 @@ async function bootstrap() {
       maxAge: 60 * 60 * 1000, // session 1 hour
     },
   }))
-  app.useGlobalPipes(new ValidationPipe({ transform: true })) // 将dto普通对象转为实例
-
+  // app.useGlobalPipes(new ValidationPipe({ transform: true })) // 将dto普通对象转为实例
+  app.useGlobalPipes(new I18nValidationPipe({ transform: true })) // }))
+  app.useGlobalFilters(new I18nValidationExceptionFilter({ detailedErrors: true })) // 自定义的过滤器则需要自己去调用i18n 翻译
   // 配置swagger
   const options = new DocumentBuilder()
   .setTitle('cms api')

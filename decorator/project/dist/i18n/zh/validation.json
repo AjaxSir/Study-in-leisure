@@ -1,0 +1,5 @@
+{
+    "minLength": "{field} 字段至少需要 {minLength}个字符",
+    "maxLength": "{field} 最多 {maxLength}个字符",
+    "required": "{field}必填字段"
+}

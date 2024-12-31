@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-12-26 16:14:59
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-31 10:32:43
+ * @LastEditTime: 2024-12-31 11:39:03
  * @Description: 
  */
 import { Global, MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
@@ -20,7 +20,9 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseInterceptor } from 'src/interceptor/response.interceptor';
 import { LoggerMiddleware } from 'src/logger/logger.middeware';
 import { UnifyExceptionFilter } from 'src/filter/unify-exception.filter';
-import { stringify } from 'querystring';
+import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } from 'nestjs-i18n'
+import { join } from 'path';
+import { watch } from 'fs';
 @Global()
 @Module({
 
@@ -85,6 +87,18 @@ import { stringify } from 'querystring';
                     ),
                 }),
             ],
+        }),
+        I18nModule.forRoot({
+            fallbackLanguage: 'en',
+            loaderOptions: {
+                path: join(__dirname, '../i18n'),
+                watch: true,
+            },
+            resolvers: [
+                AcceptLanguageResolver,
+                new QueryResolver(['lang']),
+                new HeaderResolver(['x-custom-lang'])
+            ]
         })
     ],
     providers: [

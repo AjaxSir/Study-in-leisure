@@ -17,7 +17,9 @@ const common_1 = require("@nestjs/common");
 const user_service_1 = require("../../shared/services/user.service");
 const createUser_dto_1 = require("../../shared/dtos/createUser.dto");
 const swagger_1 = require("@nestjs/swagger");
+const nestjs_i18n_1 = require("nestjs-i18n");
 const User_1 = require("../../shared/entities/User");
+const unify_exception_filter_1 = require("../../filter/unify-exception.filter");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -29,9 +31,13 @@ let UserController = class UserController {
         console.log(createUserDto, 'createUserDto');
         return this.userService.create(createUserDto);
     }
-    async findOneById(id) {
+    async findOneById(id, i18n) {
         console.log(id, 'id');
-        return this.userService.findOne({ where: { id } });
+        const result = await this.userService.findOne({ where: { id } });
+        if (!result) {
+            throw new common_1.HttpException('User not found', common_1.HttpStatus.NOT_FOUND);
+        }
+        return `${i18n.t('user.hello', { args: { username: result.username } })} - ${result.username}`;
     }
     async updateUser(id, updateUserDto) {
         return this.userService.update(id, updateUserDto);
@@ -69,8 +75,9 @@ __decorate([
     FindOne(),
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(1, (0, nestjs_i18n_1.I18n)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [Number, nestjs_i18n_1.I18nContext]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "findOneById", null);
 __decorate([
@@ -97,6 +104,7 @@ exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('api/user'),
     (0, common_1.UseInterceptors)(common_1.ClassSerializerInterceptor),
     (0, swagger_1.ApiTags)('api/users'),
+    (0, common_1.UseFilters)(unify_exception_filter_1.UnifyExceptionFilter),
     __metadata("design:paramtypes", [user_service_1.UserService])
 ], UserController);
 function FindOne() {

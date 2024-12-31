@@ -53,11 +53,9 @@ let IsUserNameUniqueConstructor = class IsUserNameUniqueConstructor {
                     username: value.toLowerCase(),
                 }
             });
-            console.log('IsUserNameUniqueConstructor', result);
             return !result;
         };
         userRepository = userRepository ? userRepository : this.user;
-        console.log('IsUserNameUniqueConstructor', this.user);
     }
     defaultMessage(validationArguments) {
         const { property, value } = validationArguments;

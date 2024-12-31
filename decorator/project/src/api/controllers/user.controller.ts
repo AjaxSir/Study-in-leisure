@@ -1,18 +1,21 @@
 /*
  * @Date: 2024-12-27 14:52:37
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-30 15:31:59
+ * @LastEditTime: 2024-12-31 14:47:58
  * @Description: 
  */
-import { Controller, Post, Get, Body, ParseIntPipe, Param, Put, Patch, HttpStatus, applyDecorators, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
+import { Controller, Post, Get, Body, ParseIntPipe, Param, Put, Patch, HttpStatus, applyDecorators, UseInterceptors, ClassSerializerInterceptor, HttpException, UseFilters } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserService } from 'src/shared/services/user.service';
 import { CreateUserDto, UpdateUserDto } from 'src/shared/dtos/createUser.dto'
 import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { I18n, I18nContext } from 'nestjs-i18n'
 import { User } from 'src/shared/entities/User';
+import { UnifyExceptionFilter } from 'src/filter/unify-exception.filter';
 @Controller('api/user')
-@UseInterceptors(ClassSerializerInterceptor)
+@UseInterceptors(ClassSerializerInterceptor) // 响应拦截
 @ApiTags('api/users')
+@UseFilters(UnifyExceptionFilter)
 export class UserController {
     constructor(private readonly userService: UserService) {
 
@@ -41,9 +44,13 @@ export class UserController {
 
     @FindOne()
     @Get(':id')
-    async findOneById(@Param('id', ParseIntPipe) id: number) {
+    async findOneById(@Param('id', ParseIntPipe) id: number, @I18n() i18n:I18nContext) {
         console.log(id, 'id')
-        return this.userService.findOne({ where: { id } });
+        const result = await this.userService.findOne({ where: { id } });
+        if (!result) {
+            throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+        }
+        return `${i18n.t('user.hello', {args: { username: result.username } })} - ${result.username}`
     }
 
     @Put(":id")

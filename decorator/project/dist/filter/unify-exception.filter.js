@@ -15,10 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UnifyExceptionFilter = void 0;
 const common_1 = require("@nestjs/common");
 const nest_winston_1 = require("nest-winston");
+const nestjs_i18n_1 = require("nestjs-i18n");
 const winston_1 = require("winston");
 let UnifyExceptionFilter = class UnifyExceptionFilter {
-    constructor(logger) {
+    constructor(logger, i18n) {
         this.logger = logger;
+        this.i18n = i18n;
     }
     catch(exception, host) {
         const ctx = host.switchToHttp();
@@ -28,13 +30,19 @@ let UnifyExceptionFilter = class UnifyExceptionFilter {
         let message = exception.message || 'Internal Server Error';
         let validationErrors = null;
         if (exception instanceof common_1.HttpException) {
-            status = exception.getStatus();
-            const exceptionResponse = exception.getResponse();
-            if (typeof exceptionResponse === 'object' && exceptionResponse['message']) {
-                message = exceptionResponse['message'];
-                if (Array.isArray(message)) {
-                    validationErrors = message;
-                    message = validationErrors.join(',');
+            if (exception instanceof nestjs_i18n_1.I18nValidationException) {
+                const { errors } = exception;
+                message = errors.map(e => this.formatErrorsMessage(e, request.i18nLang)).join(',');
+            }
+            else {
+                status = exception.getStatus();
+                const exceptionResponse = exception.getResponse();
+                if (typeof exceptionResponse === 'object' && exceptionResponse['message']) {
+                    message = exceptionResponse['message'];
+                    if (Array.isArray(message)) {
+                        validationErrors = message;
+                        message = validationErrors.join(',');
+                    }
                 }
             }
         }
@@ -55,10 +63,20 @@ let UnifyExceptionFilter = class UnifyExceptionFilter {
             path: request.url
         });
     }
+    formatErrorsMessage(e, lang) {
+        const { property, value, constraints } = e;
+        const constraintsValues = Object.values(constraints);
+        console.log('formatErrorsMessage', constraints, constraintsValues);
+        return constraintsValues.map((c) => {
+            const [variable, description] = c.split('|');
+            return description ? this.i18n.translate(variable, { lang, args: JSON.parse(description) }) : variable;
+        }).join(';');
+    }
 };
 exports.UnifyExceptionFilter = UnifyExceptionFilter;
 exports.UnifyExceptionFilter = UnifyExceptionFilter = __decorate([
     __param(0, (0, common_1.Inject)(nest_winston_1.WINSTON_MODULE_NEST_PROVIDER)),
-    __metadata("design:paramtypes", [winston_1.Logger])
+    __metadata("design:paramtypes", [winston_1.Logger,
+        nestjs_i18n_1.I18nService])
 ], UnifyExceptionFilter);
 //# sourceMappingURL=unify-exception.filter.js.map

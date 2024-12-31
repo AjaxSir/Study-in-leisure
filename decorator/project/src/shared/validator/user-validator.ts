@@ -3,6 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { registerDecorator, ValidationArguments, ValidationOptions, ValidatorConstraint, ValidatorConstraintInterface } from "class-validator";
 import { Repository } from "typeorm";
 import { User } from "../entities/User";
+import { I18nService } from "nestjs-i18n";
 
 @Injectable()
 @ValidatorConstraint({ name: "usernameStartWith", async: false }) // 
@@ -32,13 +33,12 @@ function startWith(prefix: string, options?: ValidationOptions) {
 }
 
 let userRepository = null
-
 @Injectable()
 @ValidatorConstraint({ name: "IsUserNameUniqueConstructor", async: true }) // 
 export class IsUserNameUniqueConstructor implements ValidatorConstraintInterface {
-    constructor(@InjectRepository(User) private readonly user: Repository<User> ) {
+    constructor(@InjectRepository(User) private readonly user: Repository<User>) {
         userRepository =  userRepository? userRepository : this.user
-        console.log('IsUserNameUniqueConstructor',this.user )
+        // console.log('IsUserNameUniqueConstructor',this.user )
     }
     validate = async (value: any, validationArguments?: ValidationArguments): Promise<boolean> => {
         const result = await userRepository.findOne({
@@ -46,7 +46,7 @@ export class IsUserNameUniqueConstructor implements ValidatorConstraintInterface
                 username: value.toLowerCase(),
             }
         })
-        console.log('IsUserNameUniqueConstructor', result)
+        // console.log('IsUserNameUniqueConstructor', result)
         return !result
     }
     defaultMessage?(validationArguments?: ValidationArguments): string {

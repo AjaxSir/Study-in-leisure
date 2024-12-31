@@ -4,8 +4,8 @@ const core_1 = require("@nestjs/core");
 const app_module_1 = require("./app.module");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
-const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
+const nestjs_i18n_1 = require("nestjs-i18n");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.use(cookieParser());
@@ -17,7 +17,8 @@ async function bootstrap() {
             maxAge: 60 * 60 * 1000,
         },
     }));
-    app.useGlobalPipes(new common_1.ValidationPipe({ transform: true }));
+    app.useGlobalPipes(new nestjs_i18n_1.I18nValidationPipe({ transform: true }));
+    app.useGlobalFilters(new nestjs_i18n_1.I18nValidationExceptionFilter({ detailedErrors: true }));
     const options = new swagger_1.DocumentBuilder()
         .setTitle('cms api')
         .addTag('cms')

@@ -21,6 +21,8 @@ const core_1 = require("@nestjs/core");
 const response_interceptor_1 = require("../interceptor/response.interceptor");
 const logger_middeware_1 = require("../logger/logger.middeware");
 const unify_exception_filter_1 = require("../filter/unify-exception.filter");
+const nestjs_i18n_1 = require("nestjs-i18n");
+const path_1 = require("path");
 let SharedModule = class SharedModule {
     configure(consumer) {
         consumer.apply(logger_middeware_1.LoggerMiddleware).forRoutes({ path: "*", method: common_1.RequestMethod.ALL });
@@ -78,6 +80,18 @@ exports.SharedModule = SharedModule = __decorate([
                         }), winston.format.printf(info => `${info.timestamp} ${info.level}: ${info.message}  路径: ${info.url}  参数: ${JSON.stringify(info.query)} \n`)),
                     }),
                 ],
+            }),
+            nestjs_i18n_1.I18nModule.forRoot({
+                fallbackLanguage: 'en',
+                loaderOptions: {
+                    path: (0, path_1.join)(__dirname, '../i18n'),
+                    watch: true,
+                },
+                resolvers: [
+                    nestjs_i18n_1.AcceptLanguageResolver,
+                    new nestjs_i18n_1.QueryResolver(['lang']),
+                    new nestjs_i18n_1.HeaderResolver(['x-custom-lang'])
+                ]
             })
         ],
         providers: [

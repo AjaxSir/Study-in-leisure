@@ -22,3 +22,5 @@ rProfiling/*
 .env
 **/migrations/*
 /dist
+
+log/*

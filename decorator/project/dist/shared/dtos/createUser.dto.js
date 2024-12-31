@@ -15,6 +15,7 @@ const common_1 = require("@nestjs/common");
 const class_transformer_1 = require("class-transformer");
 const swagger_1 = require("@nestjs/swagger");
 const user_validator_1 = require("../validator/user-validator");
+const nestjs_i18n_1 = require("nestjs-i18n");
 class CreateUserDto {
 }
 exports.CreateUserDto = CreateUserDto;
@@ -32,6 +33,7 @@ __decorate([
 ], CreateUserDto.prototype, "password", void 0);
 __decorate([
     (0, class_validator_1.IsEmail)(),
+    (0, class_validator_1.IsNotEmpty)({ message: (0, nestjs_i18n_1.i18nValidationMessage)('validation.required', { field: 'email' }) }),
     (0, swagger_1.ApiProperty)({ name: 'email', default: '123@qq.com' }),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "email", void 0);
@@ -54,7 +56,7 @@ __decorate([
     __metadata("design:type", Number)
 ], UpdateUserDto.prototype, "id", void 0);
 function PasswordValidator() {
-    return (0, common_1.applyDecorators)((0, class_validator_1.IsString)(), (0, class_validator_1.MinLength)(6), (0, class_validator_1.MaxLength)(20));
+    return (0, common_1.applyDecorators)((0, class_validator_1.IsString)(), (0, class_validator_1.MinLength)(6, { message: (0, nestjs_i18n_1.i18nValidationMessage)('validation.minLength', { field: 'password', minLength: 6 }) }), (0, class_validator_1.MaxLength)(8, { message: (0, nestjs_i18n_1.i18nValidationMessage)('validation.maxLength', { field: 'password', maxLength: 8 }) }));
 }
 function MoneyValidator() {
     return (0, common_1.applyDecorators)((0, class_validator_1.IsNumber)(), (0, class_validator_1.IsPositive)(), (0, class_transformer_1.Type)(() => Number));

@@ -1,5 +1,6 @@
 import { UserService } from 'src/shared/services/user.service';
 import { CreateUserDto, UpdateUserDto } from 'src/shared/dtos/createUser.dto';
+import { I18nContext } from 'nestjs-i18n';
 import { User } from 'src/shared/entities/User';
 export declare class UserController {
     private readonly userService;
@@ -18,7 +19,7 @@ export declare class UserController {
         role?: string;
         money?: number;
     } & User)>;
-    findOneById(id: number): Promise<User>;
+    findOneById(id: number, i18n: I18nContext): Promise<string>;
     updateUser(id: number, updateUserDto: UpdateUserDto): Promise<import("typeorm").UpdateResult>;
     updateUserBatch(updateUserDto: UpdateUserDto): Promise<import("typeorm").DeepPartial<User> & User>;
 }
