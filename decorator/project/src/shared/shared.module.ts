@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-12-26 16:14:59
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-31 11:39:03
+ * @LastEditTime: 2024-12-31 17:08:18
  * @Description: 
  */
 import { Global, MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
@@ -23,6 +23,7 @@ import { UnifyExceptionFilter } from 'src/filter/unify-exception.filter';
 import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } from 'nestjs-i18n'
 import { join } from 'path';
 import { watch } from 'fs';
+import { UtilityService } from 'src/utils/utility.service';
 @Global()
 @Module({
 
@@ -102,16 +103,18 @@ import { watch } from 'fs';
         })
     ],
     providers: [
+        
+        // {
+        //     provide: APP_FILTER,
+        //     useClass: UnifyExceptionFilter // 全局过滤器
+        // },
         {
             provide: APP_INTERCEPTOR,
             useClass: ResponseInterceptor, // 全局响应拦截器
         },
-        {
-            provide: APP_FILTER,
-            useClass: UnifyExceptionFilter // 全局过滤器
-        }
+        UtilityService
         ,ConfiguareService, UserService, IsUserNameUniqueConstructor],
-    exports: [ConfiguareService, UserService, IsUserNameUniqueConstructor],
+    exports: [UtilityService, ConfiguareService, UserService, IsUserNameUniqueConstructor],
 })
 export class SharedModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

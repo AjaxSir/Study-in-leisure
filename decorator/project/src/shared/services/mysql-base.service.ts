@@ -1,3 +1,10 @@
+import { plainToInstance } from 'class-transformer';
+/*
+ * @Date: 2024-12-27 11:23:06
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2024-12-31 17:24:04
+ * @Description: 
+ */
 import { Injectable, Get } from '@nestjs/common'
 import { FindOneOptions, Repository } from 'typeorm'
 import { DeepPartial } from 'typeorm/common/DeepPartial'
@@ -12,7 +19,10 @@ export abstract class MySqlBaseService<T> {
     }
 
     async create(createDto: DeepPartial<T>) {
-        const result = await this.repository.save(createDto)
+        const ins = await this.repository.create(createDto)
+        const result = await this.repository.save(ins)
+        // const result = await this.repository.save(createDto) 这样不会经过ClassSerializerInterceptor处理 需要自行修改
+        // plainToInstance(User, result) 这样就会处理
         return result
     }
 

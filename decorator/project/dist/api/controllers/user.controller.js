@@ -20,16 +20,21 @@ const swagger_1 = require("@nestjs/swagger");
 const nestjs_i18n_1 = require("nestjs-i18n");
 const User_1 = require("../../shared/entities/User");
 const unify_exception_filter_1 = require("../../filter/unify-exception.filter");
+const utility_service_1 = require("../../utils/utility.service");
 let UserController = class UserController {
-    constructor(userService) {
+    constructor(userService, utilService) {
         this.userService = userService;
+        this.utilService = utilService;
     }
     async findAll() {
-        return this.userService.findAll();
+        return await this.userService.findAll();
     }
     async createUser(createUserDto) {
+        if (createUserDto.password) {
+            createUserDto.password = await this.utilService.hashField(createUserDto.password);
+        }
         console.log(createUserDto, 'createUserDto');
-        return this.userService.create(createUserDto);
+        return await this.userService.create(createUserDto);
     }
     async findOneById(id, i18n) {
         console.log(id, 'id');
@@ -37,7 +42,7 @@ let UserController = class UserController {
         if (!result) {
             throw new common_1.HttpException('User not found', common_1.HttpStatus.NOT_FOUND);
         }
-        return `${i18n.t('user.hello', { args: { username: result.username } })} - ${result.username}`;
+        return result;
     }
     async updateUser(id, updateUserDto) {
         return this.userService.update(id, updateUserDto);
@@ -102,10 +107,11 @@ __decorate([
 ], UserController.prototype, "updateUserBatch", null);
 exports.UserController = UserController = __decorate([
     (0, common_1.Controller)('api/user'),
-    (0, common_1.UseInterceptors)(common_1.ClassSerializerInterceptor),
     (0, swagger_1.ApiTags)('api/users'),
     (0, common_1.UseFilters)(unify_exception_filter_1.UnifyExceptionFilter),
-    __metadata("design:paramtypes", [user_service_1.UserService])
+    (0, common_1.UseInterceptors)(common_1.ClassSerializerInterceptor),
+    __metadata("design:paramtypes", [user_service_1.UserService,
+        utility_service_1.UtilityService])
 ], UserController);
 function FindOne() {
     return (0, common_1.applyDecorators)((0, swagger_1.ApiResponse)({ status: 201, type: User_1.User }), (0, swagger_1.ApiParam)({ name: 'id', description: "用户id" }), (0, swagger_1.ApiResponse)({ status: common_1.HttpStatus.NOT_FOUND, description: "参数错误", type: User_1.User }), (0, swagger_1.ApiOperation)({

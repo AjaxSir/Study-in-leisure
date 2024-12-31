@@ -2,7 +2,7 @@ import { I18n } from 'nestjs-i18n';
 /*
  * @Date: 2024-12-26 15:42:14
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-31 14:45:38
+ * @LastEditTime: 2024-12-31 17:18:31
  * @Description: 
  */
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -13,6 +13,7 @@ import * as session from 'express-session'
 import { ValidationPipe } from '@nestjs/common'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import { I18nValidationPipe, I18nValidationExceptionFilter } from 'nestjs-i18n'
+import { useContainer } from 'class-validator'
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   
@@ -25,6 +26,8 @@ async function bootstrap() {
       maxAge: 60 * 60 * 1000, // session 1 hour
     },
   }))
+  // 自定义验证器注入容器
+  useContainer(app.select(AppModule), { fallbackOnErrors: true })
   // app.useGlobalPipes(new ValidationPipe({ transform: true })) // 将dto普通对象转为实例
   app.useGlobalPipes(new I18nValidationPipe({ transform: true })) // }))
   app.useGlobalFilters(new I18nValidationExceptionFilter({ detailedErrors: true })) // 自定义的过滤器则需要自己去调用i18n 翻译

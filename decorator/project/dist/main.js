@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const swagger_1 = require("@nestjs/swagger");
 const nestjs_i18n_1 = require("nestjs-i18n");
+const class_validator_1 = require("class-validator");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.use(cookieParser());
@@ -17,6 +18,7 @@ async function bootstrap() {
             maxAge: 60 * 60 * 1000,
         },
     }));
+    (0, class_validator_1.useContainer)(app.select(app_module_1.AppModule), { fallbackOnErrors: true });
     app.useGlobalPipes(new nestjs_i18n_1.I18nValidationPipe({ transform: true }));
     app.useGlobalFilters(new nestjs_i18n_1.I18nValidationExceptionFilter({ detailedErrors: true }));
     const options = new swagger_1.DocumentBuilder()

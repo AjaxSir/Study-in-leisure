@@ -21,7 +21,8 @@ let MySqlBaseService = class MySqlBaseService {
         return users;
     }
     async create(createDto) {
-        const result = await this.repository.save(createDto);
+        const ins = await this.repository.create(createDto);
+        const result = await this.repository.save(ins);
         return result;
     }
     async findOne(options) {

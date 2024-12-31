@@ -1,5 +1,5 @@
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
-import { Exclude, Transform } from 'class-transformer';
+import { Exclude, Expose, Transform } from 'class-transformer';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn} from 'typeorm';
 @Entity({
     name: 'project_user'
@@ -24,6 +24,7 @@ export class User {
     createdAt: Date
 
     @ApiProperty({ name: 'contract', description: "联系方式" })
+    @Expose()
     get contract() {
         return `联系方式: ${this.email}`
     }

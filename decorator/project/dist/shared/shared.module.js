@@ -20,9 +20,9 @@ const winston = require("winston");
 const core_1 = require("@nestjs/core");
 const response_interceptor_1 = require("../interceptor/response.interceptor");
 const logger_middeware_1 = require("../logger/logger.middeware");
-const unify_exception_filter_1 = require("../filter/unify-exception.filter");
 const nestjs_i18n_1 = require("nestjs-i18n");
 const path_1 = require("path");
+const utility_service_1 = require("../utils/utility.service");
 let SharedModule = class SharedModule {
     configure(consumer) {
         consumer.apply(logger_middeware_1.LoggerMiddleware).forRoutes({ path: "*", method: common_1.RequestMethod.ALL });
@@ -99,13 +99,10 @@ exports.SharedModule = SharedModule = __decorate([
                 provide: core_1.APP_INTERCEPTOR,
                 useClass: response_interceptor_1.ResponseInterceptor,
             },
-            {
-                provide: core_1.APP_FILTER,
-                useClass: unify_exception_filter_1.UnifyExceptionFilter
-            },
+            utility_service_1.UtilityService,
             configuare_service_1.ConfiguareService, user_service_1.UserService, user_validator_1.IsUserNameUniqueConstructor
         ],
-        exports: [configuare_service_1.ConfiguareService, user_service_1.UserService, user_validator_1.IsUserNameUniqueConstructor],
+        exports: [utility_service_1.UtilityService, configuare_service_1.ConfiguareService, user_service_1.UserService, user_validator_1.IsUserNameUniqueConstructor],
     })
 ], SharedModule);
 //# sourceMappingURL=shared.module.js.map

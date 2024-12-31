@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-12-27 14:52:37
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-31 14:47:58
+ * @LastEditTime: 2024-12-31 17:16:49
  * @Description: 
  */
 import { Controller, Post, Get, Body, ParseIntPipe, Param, Put, Patch, HttpStatus, applyDecorators, UseInterceptors, ClassSerializerInterceptor, HttpException, UseFilters } from '@nestjs/common';
@@ -12,12 +12,17 @@ import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/s
 import { I18n, I18nContext } from 'nestjs-i18n'
 import { User } from 'src/shared/entities/User';
 import { UnifyExceptionFilter } from 'src/filter/unify-exception.filter';
+import { UtilityService } from 'src/utils/utility.service';
+import { plainToInstance } from 'class-transformer';
 @Controller('api/user')
-@UseInterceptors(ClassSerializerInterceptor) // 响应拦截
 @ApiTags('api/users')
 @UseFilters(UnifyExceptionFilter)
+@UseInterceptors(ClassSerializerInterceptor) // 响应拦截
 export class UserController {
-    constructor(private readonly userService: UserService) {
+    constructor(
+        private readonly userService: UserService,
+        private readonly utilService: UtilityService
+        ) {
 
     }
     @ApiResponse({ status: 200, type: [User] })
@@ -27,7 +32,7 @@ export class UserController {
     })
     @Get()
     async findAll() {
-        return this.userService.findAll()
+        return await this.userService.findAll()
     }
 
     @Post()
@@ -38,8 +43,11 @@ export class UserController {
         summary: "创建用户"
     })
     async createUser(@Body() createUserDto: CreateUserDto) {
+        if (createUserDto.password) {
+            createUserDto.password = await this.utilService.hashField(createUserDto.password);
+        }
         console.log(createUserDto, 'createUserDto')
-        return this.userService.create(createUserDto)
+        return await this.userService.create(createUserDto)
     }
 
     @FindOne()
@@ -50,7 +58,8 @@ export class UserController {
         if (!result) {
             throw new HttpException('User not found', HttpStatus.NOT_FOUND);
         }
-        return `${i18n.t('user.hello', {args: { username: result.username } })} - ${result.username}`
+        return result
+        // return `${i18n.t('user.hello', {args: { username: result.username } })} - ${result.username}`
     }
 
     @Put(":id")

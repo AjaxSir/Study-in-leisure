@@ -32,16 +32,14 @@ function startWith(prefix: string, options?: ValidationOptions) {
     }
 }
 
-let userRepository = null
 @Injectable()
 @ValidatorConstraint({ name: "IsUserNameUniqueConstructor", async: true }) // 
 export class IsUserNameUniqueConstructor implements ValidatorConstraintInterface {
     constructor(@InjectRepository(User) private readonly user: Repository<User>) {
-        userRepository =  userRepository? userRepository : this.user
         // console.log('IsUserNameUniqueConstructor',this.user )
     }
     validate = async (value: any, validationArguments?: ValidationArguments): Promise<boolean> => {
-        const result = await userRepository.findOne({
+        const result = await this.user.findOne({
             where: {
                 username: value.toLowerCase(),
             }

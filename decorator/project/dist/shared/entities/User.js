@@ -43,6 +43,7 @@ __decorate([
 ], User.prototype, "createdAt", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ name: 'contract', description: "联系方式" }),
+    (0, class_transformer_1.Expose)(),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [])
 ], User.prototype, "contract", null);

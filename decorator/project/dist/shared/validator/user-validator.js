@@ -43,19 +43,17 @@ function startWith(prefix, options) {
         });
     };
 }
-let userRepository = null;
 let IsUserNameUniqueConstructor = class IsUserNameUniqueConstructor {
     constructor(user) {
         this.user = user;
         this.validate = async (value, validationArguments) => {
-            const result = await userRepository.findOne({
+            const result = await this.user.findOne({
                 where: {
                     username: value.toLowerCase(),
                 }
             });
             return !result;
         };
-        userRepository = userRepository ? userRepository : this.user;
     }
     defaultMessage(validationArguments) {
         const { property, value } = validationArguments;
