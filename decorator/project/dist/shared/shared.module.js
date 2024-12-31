@@ -14,7 +14,17 @@ const typeorm_1 = require("@nestjs/typeorm");
 const user_service_1 = require("./services/user.service");
 const User_1 = require("../shared/entities/User");
 const user_validator_1 = require("./validator/user-validator");
+const nest_winston_1 = require("nest-winston");
+require("winston-daily-rotate-file");
+const winston = require("winston");
+const core_1 = require("@nestjs/core");
+const response_interceptor_1 = require("../interceptor/response.interceptor");
+const logger_middeware_1 = require("../logger/logger.middeware");
+const unify_exception_filter_1 = require("../filter/unify-exception.filter");
 let SharedModule = class SharedModule {
+    configure(consumer) {
+        consumer.apply(logger_middeware_1.LoggerMiddleware).forRoutes({ path: "*", method: common_1.RequestMethod.ALL });
+    }
 };
 exports.SharedModule = SharedModule;
 exports.SharedModule = SharedModule = __decorate([
@@ -34,9 +44,53 @@ exports.SharedModule = SharedModule = __decorate([
                     };
                 }
             }),
-            typeorm_1.TypeOrmModule.forFeature([User_1.User])
+            typeorm_1.TypeOrmModule.forFeature([User_1.User]),
+            nest_winston_1.WinstonModule.forRoot({
+                transports: [
+                    new winston.transports.Console({
+                        level: 'debug',
+                        format: winston.format.combine(winston.format.timestamp({
+                            format: 'YYYY-MM-DD HH:mm:ss',
+                        }), winston.format.colorize(), winston.format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`)),
+                    }),
+                    new winston.transports.DailyRotateFile({
+                        level: 'info',
+                        dirname: 'log',
+                        filename: 'logs/info-%DATE%.log',
+                        datePattern: 'YYYY-MM-DD',
+                        zippedArchive: true,
+                        maxSize: '20m',
+                        maxFiles: '14d',
+                        format: winston.format.combine(winston.format.timestamp({
+                            format: 'YYYY-MM-DD HH:mm:ss',
+                        }), winston.format.printf(info => `${info.timestamp} ${info.level}: ${info.message} ${info.context ? '其余参数:' + JSON.stringify(info.context) : ''}   \n`)),
+                    }),
+                    new winston.transports.DailyRotateFile({
+                        level: 'error',
+                        dirname: 'log',
+                        filename: 'logs/error-%DATE%.log',
+                        datePattern: 'YYYY-MM-DD',
+                        zippedArchive: true,
+                        maxSize: '20m',
+                        maxFiles: '14d',
+                        format: winston.format.combine(winston.format.timestamp({
+                            format: 'YYYY-MM-DD HH:mm:ss',
+                        }), winston.format.printf(info => `${info.timestamp} ${info.level}: ${info.message}  路径: ${info.url}  参数: ${JSON.stringify(info.query)} \n`)),
+                    }),
+                ],
+            })
         ],
-        providers: [configuare_service_1.ConfiguareService, user_service_1.UserService, user_validator_1.IsUserNameUniqueConstructor],
+        providers: [
+            {
+                provide: core_1.APP_INTERCEPTOR,
+                useClass: response_interceptor_1.ResponseInterceptor,
+            },
+            {
+                provide: core_1.APP_FILTER,
+                useClass: unify_exception_filter_1.UnifyExceptionFilter
+            },
+            configuare_service_1.ConfiguareService, user_service_1.UserService, user_validator_1.IsUserNameUniqueConstructor
+        ],
         exports: [configuare_service_1.ConfiguareService, user_service_1.UserService, user_validator_1.IsUserNameUniqueConstructor],
     })
 ], SharedModule);
