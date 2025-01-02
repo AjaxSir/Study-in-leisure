@@ -1,0 +1,87 @@
+/*
+ * @Date: 2024-12-27 14:52:37
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2025-01-02 16:27:11
+ * @Description: 
+ */
+import { Controller, Post, Get, Body, ParseIntPipe, Param, Put, Patch, HttpStatus, applyDecorators, UseInterceptors, ClassSerializerInterceptor, HttpException, UseFilters } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { <%=classify(name)%>Service } from 'src/shared/services/<%=name%>.service';
+import { Create<%=capitalize(name)%>Dto, Update<%=capitalize(name)%>Dto } from 'src/shared/dtos/create<%=capitalize(name)%>.dto'
+import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { I18n, I18nContext } from 'nestjs-i18n'
+import { <%=capitalize(name)%> } from 'src/shared/entities/<%=capitalize(name)%>';
+import { UnifyExceptionFilter } from 'src/filter/unify-exception.filter';
+import { UtilityService } from 'src/utils/utility.service';
+import { plainToInstance } from 'class-transformer';
+@Controller('api/<%=name%>')
+@ApiTags('api/<%=name%>')
+@UseFilters(UnifyExceptionFilter)
+@UseInterceptors(ClassSerializerInterceptor) // 响应拦截
+export class <%=capitalize(name)%>Controller {
+    constructor(
+        private readonly <%=name%>Service: <%=capitalize(name)%>Service,
+        private readonly utilService: UtilityService
+        ) {
+
+    }
+    @ApiResponse({ status: 200, type: [<%=capitalize(name)%>] })
+    @ApiOperation({
+        summary: '获取全部<%=title%>列表',
+        description: "获取全部<%=title%>列表"
+    })
+    @Get()
+    async findAll() {
+        return await this.<%=name%>Service.findAll()
+    }
+
+    @Post()
+    @ApiResponse({ status: 201, type: <%=capitalize(name)%> })
+    @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: "参数错误" })
+    @ApiOperation({
+        description: "创建<%=title%>",
+        summary: "创建<%=title%>"
+    })
+    async createUser(@Body() create<%=capitalize(name)%>Dto: Create<%=capitalize(name)%>Dto) {
+        
+        console.log(create<%=capitalize(name)%>Dto, 'create<%=capitalize(name)%>Dto')
+        return await this.<%=name%>Service.create(create<%=capitalize(name)%>Dto)
+    }
+
+    @FindOne()
+    @Get(':id')
+    async findOneById(@Param('id', ParseIntPipe) id: number, @I18n() i18n:I18nContext) {
+        console.log(id, 'id')
+        const result = await this.<%=name%>Service.findOne({ where: { id } });
+        if (!result) {
+            throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+        }
+        return result
+        // return `${i18n.t('user.hello', {args: { username: result.username } })} - ${result.username}`
+    }
+
+    @Put(":id")
+    @ApiOperation({
+        description: "更新<%=title%>",
+        summary: "更新<%=title%>"
+    })
+    @ApiBody({ type: Update<%=capitalize(name)%>Dto, description: "更新<%=title%>,id必传" })
+    async updateUser(@Param("id", ParseIntPipe) id: number, @Body() update<%=capitalize(name)%>Dto: Update<%=capitalize(name)%>Dto) {
+        return this.<%=name%>Service.update(id, update<%=capitalize(name)%>Dto);
+    }
+
+    @Patch()
+    async updateUserBatch(@Body() update<%=capitalize(name)%>Dto: Update<%=capitalize(name)%>Dto) {
+        return this.<%=name%>Service.update_1(update<%=capitalize(name)%>Dto);
+    }
+}
+
+function FindOne() {
+    return applyDecorators(ApiResponse({ status: 201, type: <%=capitalize(name)%> }),
+        ApiParam({ name: 'id', description: "用户id" }),
+        ApiResponse({ status: HttpStatus.NOT_FOUND, description: "参数错误", type: <%=capitalize(name)%> }),
+        ApiOperation({
+            description: "通过id查询<%=title%>",
+            summary: "通过id查询<%=title%>"
+        }))
+}

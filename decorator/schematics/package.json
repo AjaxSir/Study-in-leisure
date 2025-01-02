@@ -1,0 +1,12 @@
+{
+  "name": "schematics",
+  "version": "1.0.0",
+  "description": "<!--\r  * @Date: 2025-01-02 10:35:38\r  * @LastEditors: xiaolong.su@bst.ai\r  * @LastEditTime: 2025-01-02 10:37:47\r  * @Description: \r -->\r ### schematics\r #### @angular-devkit/schematics-cli\r - 帮助开发者自动划代码生成任务，创建组件服务模块\r - 提供命令行 schematics \r -",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
