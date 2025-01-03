@@ -9,6 +9,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UtilityService = void 0;
 const common_1 = require("@nestjs/common");
 const bcrypt = require("bcryptjs");
+const path = require("path");
+const sharp = require("sharp");
+const fs = require("fs");
 let UtilityService = class UtilityService {
     async hashField(field) {
         const salt = await bcrypt.genSalt();
@@ -16,6 +19,19 @@ let UtilityService = class UtilityService {
     }
     async compareField(field, hashedField) {
         return bcrypt.compare(field, hashedField);
+    }
+    async compressImages(file) {
+        const outputDir = path.join(__dirname, '../images');
+        const compressDir = path.join(outputDir, 'compress');
+        if (!fs.existsSync(compressDir)) {
+            fs.mkdirSync(compressDir, { recursive: true });
+        }
+        const fileName = file.filename;
+        const compressedImageBuffer = await sharp(file.path)
+            .webp({ quality: 75 })
+            .toBuffer();
+        fs.writeFileSync(path.join(compressDir, fileName), compressedImageBuffer);
+        return fileName;
     }
 };
 exports.UtilityService = UtilityService;

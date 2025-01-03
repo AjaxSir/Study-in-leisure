@@ -2,7 +2,7 @@ import { I18n } from 'nestjs-i18n';
 /*
  * @Date: 2024-12-26 15:42:14
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-31 17:18:31
+ * @LastEditTime: 2025-01-03 11:08:55
  * @Description: 
  */
 import { NestExpressApplication } from '@nestjs/platform-express';
@@ -14,6 +14,7 @@ import { ValidationPipe } from '@nestjs/common'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import { I18nValidationPipe, I18nValidationExceptionFilter } from 'nestjs-i18n'
 import { useContainer } from 'class-validator'
+import { join } from 'path'
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   
@@ -40,6 +41,10 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, options)
   SwaggerModule.setup('/docs-api', app, document)
+
+  // app.useStaticAssets(join(__dirname, './images'), {
+  //   prefix: '/images'
+  // })
 
   await app.listen(3001);
 }

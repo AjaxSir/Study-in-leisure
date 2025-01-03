@@ -8,6 +8,10 @@
       {
         "include": "src/i18n/",
         "watchAssets": true
+      },
+      {
+        "include": "src/images/",
+        "watchAssets": true
       }
     ]
   }
