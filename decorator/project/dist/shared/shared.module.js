@@ -23,6 +23,10 @@ const logger_middeware_1 = require("../logger/logger.middeware");
 const nestjs_i18n_1 = require("nestjs-i18n");
 const path_1 = require("path");
 const utility_service_1 = require("../utils/utility.service");
+const auth_service_1 = require("./services/auth.service");
+const jwt_1 = require("@nestjs/jwt");
+const authGuard_1 = require("../guard/authGuard");
+const constant_1 = require("../guard/constant");
 let SharedModule = class SharedModule {
     configure(consumer) {
         consumer.apply(logger_middeware_1.LoggerMiddleware).forRoutes({ path: "*", method: common_1.RequestMethod.ALL });
@@ -92,6 +96,11 @@ exports.SharedModule = SharedModule = __decorate([
                     new nestjs_i18n_1.QueryResolver(['lang']),
                     new nestjs_i18n_1.HeaderResolver(['x-custom-lang'])
                 ]
+            }),
+            jwt_1.JwtModule.register({
+                global: true,
+                secret: constant_1.jwtConstants.secret,
+                signOptions: { expiresIn: '1h' },
             })
         ],
         providers: [
@@ -99,10 +108,14 @@ exports.SharedModule = SharedModule = __decorate([
                 provide: core_1.APP_INTERCEPTOR,
                 useClass: response_interceptor_1.ResponseInterceptor,
             },
+            {
+                provide: core_1.APP_GUARD,
+                useClass: authGuard_1.AuthGuard
+            },
             utility_service_1.UtilityService,
-            configuare_service_1.ConfiguareService, user_service_1.UserService, user_validator_1.IsUserNameUniqueConstructor
+            configuare_service_1.ConfiguareService, user_service_1.UserService, user_validator_1.IsUserNameUniqueConstructor, auth_service_1.AuthService
         ],
-        exports: [utility_service_1.UtilityService, configuare_service_1.ConfiguareService, user_service_1.UserService, user_validator_1.IsUserNameUniqueConstructor],
+        exports: [utility_service_1.UtilityService, configuare_service_1.ConfiguareService, user_service_1.UserService, user_validator_1.IsUserNameUniqueConstructor, auth_service_1.AuthService],
     })
 ], SharedModule);
 //# sourceMappingURL=shared.module.js.map

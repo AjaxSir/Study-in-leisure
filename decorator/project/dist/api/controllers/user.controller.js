@@ -21,13 +21,20 @@ const nestjs_i18n_1 = require("nestjs-i18n");
 const User_1 = require("../../shared/entities/User");
 const unify_exception_filter_1 = require("../../filter/unify-exception.filter");
 const utility_service_1 = require("../../utils/utility.service");
+const login_dto_1 = require("../../shared/dtos/login.dto");
+const auth_service_1 = require("../../shared/services/auth.service");
+const constant_1 = require("../../guard/constant");
 let UserController = class UserController {
-    constructor(userService, utilService) {
+    constructor(userService, utilService, authService) {
         this.userService = userService;
         this.utilService = utilService;
+        this.authService = authService;
     }
     async findAll() {
         return await this.userService.findAll();
+    }
+    async login(loginDto) {
+        return await this.authService.signIn(loginDto);
     }
     async createUser(createUserDto) {
         if (createUserDto.password) {
@@ -63,6 +70,18 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "findAll", null);
+__decorate([
+    (0, swagger_1.ApiOperation)({
+        description: "用户登录",
+        summary: "用户登录"
+    }),
+    (0, constant_1.Public)(),
+    (0, common_1.Post)('/login'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [login_dto_1.LoginDto]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "login", null);
 __decorate([
     (0, common_1.Post)(),
     (0, swagger_1.ApiResponse)({ status: 201, type: User_1.User }),
@@ -111,7 +130,8 @@ exports.UserController = UserController = __decorate([
     (0, common_1.UseFilters)(unify_exception_filter_1.UnifyExceptionFilter),
     (0, common_1.UseInterceptors)(common_1.ClassSerializerInterceptor),
     __metadata("design:paramtypes", [user_service_1.UserService,
-        utility_service_1.UtilityService])
+        utility_service_1.UtilityService,
+        auth_service_1.AuthService])
 ], UserController);
 function FindOne() {
     return (0, common_1.applyDecorators)((0, swagger_1.ApiResponse)({ status: 201, type: User_1.User }), (0, swagger_1.ApiParam)({ name: 'id', description: "用户id" }), (0, swagger_1.ApiResponse)({ status: common_1.HttpStatus.NOT_FOUND, description: "参数错误", type: User_1.User }), (0, swagger_1.ApiOperation)({

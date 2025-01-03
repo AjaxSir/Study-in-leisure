@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-12-27 14:52:37
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-31 17:16:49
+ * @LastEditTime: 2025-01-03 16:26:15
  * @Description: 
  */
 import { Controller, Post, Get, Body, ParseIntPipe, Param, Put, Patch, HttpStatus, applyDecorators, UseInterceptors, ClassSerializerInterceptor, HttpException, UseFilters } from '@nestjs/common';
@@ -14,6 +14,9 @@ import { User } from 'src/shared/entities/User';
 import { UnifyExceptionFilter } from 'src/filter/unify-exception.filter';
 import { UtilityService } from 'src/utils/utility.service';
 import { plainToInstance } from 'class-transformer';
+import { LoginDto } from 'src/shared/dtos/login.dto';
+import { AuthService } from 'src/shared/services/auth.service';
+import { Public } from 'src/guard/constant'
 @Controller('api/user')
 @ApiTags('api/users')
 @UseFilters(UnifyExceptionFilter)
@@ -21,7 +24,8 @@ import { plainToInstance } from 'class-transformer';
 export class UserController {
     constructor(
         private readonly userService: UserService,
-        private readonly utilService: UtilityService
+        private readonly utilService: UtilityService,
+        private readonly authService: AuthService
         ) {
 
     }
@@ -33,6 +37,17 @@ export class UserController {
     @Get()
     async findAll() {
         return await this.userService.findAll()
+    }
+
+    @ApiOperation({
+        description: "用户登录",
+        summary: "用户登录"
+    })
+    
+    @Public()
+    @Post('/login')
+    async login(@Body() loginDto: LoginDto) {
+        return await this.authService.signIn(loginDto)
     }
 
     @Post()

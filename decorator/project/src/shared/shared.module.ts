@@ -1,7 +1,7 @@
 /*
  * @Date: 2024-12-26 16:14:59
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2024-12-31 17:08:18
+ * @LastEditTime: 2025-01-03 16:11:13
  * @Description: 
  */
 import { Global, MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
@@ -16,7 +16,7 @@ import { IsUserNameUniqueConstructor } from './validator/user-validator'
 import { WinstonModule } from 'nest-winston'
 import 'winston-daily-rotate-file' // 用于实现日志文件的定期归档。由于应用日志量一般都非常大，因此需要定期自动对日志文件进行轮换、归档与删除。
 import * as winston from 'winston'
-import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ResponseInterceptor } from 'src/interceptor/response.interceptor';
 import { LoggerMiddleware } from 'src/logger/logger.middeware';
 import { UnifyExceptionFilter } from 'src/filter/unify-exception.filter';
@@ -24,6 +24,10 @@ import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } fro
 import { join } from 'path';
 import { watch } from 'fs';
 import { UtilityService } from 'src/utils/utility.service';
+import { AuthService } from './services/auth.service';
+import { JwtModule } from '@nestjs/jwt'
+import { AuthGuard } from 'src/guard/authGuard';
+import { jwtConstants } from 'src/guard/constant';
 @Global()
 @Module({
 
@@ -100,6 +104,11 @@ import { UtilityService } from 'src/utils/utility.service';
                 new QueryResolver(['lang']),
                 new HeaderResolver(['x-custom-lang'])
             ]
+        }),
+        JwtModule.register({
+            global: true,
+            secret: jwtConstants.secret,
+            signOptions: { expiresIn: '1h' }, // token 有效期为 1 小时
         })
     ],
     providers: [
@@ -112,9 +121,13 @@ import { UtilityService } from 'src/utils/utility.service';
             provide: APP_INTERCEPTOR,
             useClass: ResponseInterceptor, // 全局响应拦截器
         },
+        {
+            provide: APP_GUARD,
+            useClass: AuthGuard
+        },
         UtilityService
-        ,ConfiguareService, UserService, IsUserNameUniqueConstructor],
-    exports: [UtilityService, ConfiguareService, UserService, IsUserNameUniqueConstructor],
+        ,ConfiguareService, UserService, IsUserNameUniqueConstructor, AuthService],
+    exports: [UtilityService, ConfiguareService, UserService, IsUserNameUniqueConstructor, AuthService],
 })
 export class SharedModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
