@@ -24,17 +24,29 @@ const utility_service_1 = require("../../utils/utility.service");
 const login_dto_1 = require("../../shared/dtos/login.dto");
 const auth_service_1 = require("../../shared/services/auth.service");
 const constant_1 = require("../../guard/constant");
+const redis_service_1 = require("./../../shared/services/redis.service");
 let UserController = class UserController {
-    constructor(userService, utilService, authService) {
+    constructor(userService, utilService, authService, redisService) {
         this.userService = userService;
         this.utilService = utilService;
         this.authService = authService;
+        this.redisService = redisService;
     }
     async findAll() {
         return await this.userService.findAll();
     }
-    async login(loginDto) {
-        return await this.authService.signIn(loginDto);
+    async login(loginDto, req) {
+        const { user, access_token } = await this.authService.signIn(loginDto);
+        if (user) {
+            this.redisService.set(`user-${user.id}`, JSON.stringify(user));
+            req.session.userId = user.id;
+            return { user, access_token };
+        }
+        else {
+            return {
+                message: '用户名或密码错误'
+            };
+        }
     }
     async createUser(createUserDto) {
         if (createUserDto.password) {
@@ -78,8 +90,9 @@ __decorate([
     (0, constant_1.Public)(),
     (0, common_1.Post)('/login'),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [login_dto_1.LoginDto]),
+    __metadata("design:paramtypes", [login_dto_1.LoginDto, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "login", null);
 __decorate([
@@ -131,7 +144,8 @@ exports.UserController = UserController = __decorate([
     (0, common_1.UseInterceptors)(common_1.ClassSerializerInterceptor),
     __metadata("design:paramtypes", [user_service_1.UserService,
         utility_service_1.UtilityService,
-        auth_service_1.AuthService])
+        auth_service_1.AuthService,
+        redis_service_1.RedisService])
 ], UserController);
 function FindOne() {
     return (0, common_1.applyDecorators)((0, swagger_1.ApiResponse)({ status: 201, type: User_1.User }), (0, swagger_1.ApiParam)({ name: 'id', description: "用户id" }), (0, swagger_1.ApiResponse)({ status: common_1.HttpStatus.NOT_FOUND, description: "参数错误", type: User_1.User }), (0, swagger_1.ApiOperation)({

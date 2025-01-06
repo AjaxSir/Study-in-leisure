@@ -40,6 +40,22 @@ let ConfiguareService = class ConfiguareService {
             database: this.database,
         };
     }
+    get RedisHost() {
+        return this.configService.get('REDIS_HOST');
+    }
+    get RedisPort() {
+        return this.configService.get('REDIS_PORT');
+    }
+    get RedisPassword() {
+        return this.configService.get('REDIS_PASSWORD');
+    }
+    get RedisConig() {
+        return {
+            host: this.RedisHost,
+            port: +this.RedisPort,
+            password: this.RedisPassword,
+        };
+    }
 };
 exports.ConfiguareService = ConfiguareService;
 exports.ConfiguareService = ConfiguareService = __decorate([

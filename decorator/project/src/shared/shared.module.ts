@@ -28,6 +28,7 @@ import { AuthService } from './services/auth.service';
 import { JwtModule } from '@nestjs/jwt'
 import { AuthGuard } from 'src/guard/authGuard';
 import { jwtConstants } from 'src/guard/constant';
+import { RedisService } from './services/redis.service';
 @Global()
 @Module({
 
@@ -126,8 +127,8 @@ import { jwtConstants } from 'src/guard/constant';
             useClass: AuthGuard
         },
         UtilityService
-        ,ConfiguareService, UserService, IsUserNameUniqueConstructor, AuthService],
-    exports: [UtilityService, ConfiguareService, UserService, IsUserNameUniqueConstructor, AuthService],
+        ,ConfiguareService, UserService, IsUserNameUniqueConstructor, AuthService, RedisService],
+    exports: [UtilityService, ConfiguareService, UserService, IsUserNameUniqueConstructor, AuthService, RedisService],
 })
 export class SharedModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

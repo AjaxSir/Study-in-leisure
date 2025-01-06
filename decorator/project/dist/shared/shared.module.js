@@ -27,6 +27,7 @@ const auth_service_1 = require("./services/auth.service");
 const jwt_1 = require("@nestjs/jwt");
 const authGuard_1 = require("../guard/authGuard");
 const constant_1 = require("../guard/constant");
+const redis_service_1 = require("./services/redis.service");
 let SharedModule = class SharedModule {
     configure(consumer) {
         consumer.apply(logger_middeware_1.LoggerMiddleware).forRoutes({ path: "*", method: common_1.RequestMethod.ALL });
@@ -113,9 +114,9 @@ exports.SharedModule = SharedModule = __decorate([
                 useClass: authGuard_1.AuthGuard
             },
             utility_service_1.UtilityService,
-            configuare_service_1.ConfiguareService, user_service_1.UserService, user_validator_1.IsUserNameUniqueConstructor, auth_service_1.AuthService
+            configuare_service_1.ConfiguareService, user_service_1.UserService, user_validator_1.IsUserNameUniqueConstructor, auth_service_1.AuthService, redis_service_1.RedisService
         ],
-        exports: [utility_service_1.UtilityService, configuare_service_1.ConfiguareService, user_service_1.UserService, user_validator_1.IsUserNameUniqueConstructor, auth_service_1.AuthService],
+        exports: [utility_service_1.UtilityService, configuare_service_1.ConfiguareService, user_service_1.UserService, user_validator_1.IsUserNameUniqueConstructor, auth_service_1.AuthService, redis_service_1.RedisService],
     })
 ], SharedModule);
 //# sourceMappingURL=shared.module.js.map

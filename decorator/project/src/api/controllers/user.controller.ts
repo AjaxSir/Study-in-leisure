@@ -1,10 +1,11 @@
+
 /*
  * @Date: 2024-12-27 14:52:37
  * @LastEditors: xiaolong.su@bst.ai
  * @LastEditTime: 2025-01-03 16:26:15
  * @Description: 
  */
-import { Controller, Post, Get, Body, ParseIntPipe, Param, Put, Patch, HttpStatus, applyDecorators, UseInterceptors, ClassSerializerInterceptor, HttpException, UseFilters } from '@nestjs/common';
+import { Controller, Post, Get, Body, ParseIntPipe, Param, Put, Patch, HttpStatus, applyDecorators, UseInterceptors, ClassSerializerInterceptor, HttpException, UseFilters, Req } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserService } from 'src/shared/services/user.service';
 import { CreateUserDto, UpdateUserDto } from 'src/shared/dtos/createUser.dto'
@@ -17,6 +18,7 @@ import { plainToInstance } from 'class-transformer';
 import { LoginDto } from 'src/shared/dtos/login.dto';
 import { AuthService } from 'src/shared/services/auth.service';
 import { Public } from 'src/guard/constant'
+import { RedisService } from './../../shared/services/redis.service';
 @Controller('api/user')
 @ApiTags('api/users')
 @UseFilters(UnifyExceptionFilter)
@@ -25,7 +27,8 @@ export class UserController {
     constructor(
         private readonly userService: UserService,
         private readonly utilService: UtilityService,
-        private readonly authService: AuthService
+        private readonly authService: AuthService,
+        private readonly redisService: RedisService
         ) {
 
     }
@@ -46,8 +49,18 @@ export class UserController {
     
     @Public()
     @Post('/login')
-    async login(@Body() loginDto: LoginDto) {
-        return await this.authService.signIn(loginDto)
+    async login(@Body() loginDto: LoginDto,@Req() req) {
+        const { user, access_token  } =  await this.authService.signIn(loginDto)
+        
+        if (user) {
+            this.redisService.set(`user-${user.id}`, JSON.stringify(user))
+            req.session.userId = user.id
+            return { user, access_token }
+        } else {
+            return {
+                message: '用户名或密码错误'
+            }
+        }
     }
 
     @Post()

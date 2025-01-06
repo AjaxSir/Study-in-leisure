@@ -39,4 +39,22 @@ export class ConfiguareService {
             database: this.database,
         }
     }
+
+    get RedisHost(): string {
+        return this.configService.get('REDIS_HOST')
+    }
+    get RedisPort(): number {
+        return this.configService.get('REDIS_PORT')
+    }
+    get RedisPassword(): string {
+        return this.configService.get('REDIS_PASSWORD')
+    }
+
+    get RedisConig() {
+        return {
+            host: this.RedisHost,
+            port: +this.RedisPort,
+            password: this.RedisPassword,
+        }
+    }
 }

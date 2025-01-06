@@ -14,4 +14,12 @@ export declare class ConfiguareService {
         password: string;
         database: string;
     };
+    get RedisHost(): string;
+    get RedisPort(): number;
+    get RedisPassword(): string;
+    get RedisConig(): {
+        host: string;
+        port: number;
+        password: string;
+    };
 }

@@ -9,9 +9,6 @@ export declare class AuthService {
     constructor(jwtService: JwtService, utilityService: UtilityService, userService: UserService);
     signIn(loginDto: LoginDto): Promise<{
         access_token: string;
-        message?: undefined;
-    } | {
-        message: string;
-        access_token?: undefined;
+        user: import("../entities/User").User;
     }>;
 }

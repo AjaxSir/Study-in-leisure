@@ -27,10 +27,12 @@ let AuthService = class AuthService {
             const payload = { username, email: user.email };
             return {
                 access_token: this.jwtService.sign(payload),
+                user
             };
         }
         return {
-            message: 'Invalid credentials',
+            user,
+            access_token: null,
         };
     }
 };

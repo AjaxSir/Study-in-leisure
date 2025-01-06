@@ -1,3 +1,9 @@
+/*
+ * @Date: 2025-01-03 16:15:45
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2025-01-06 14:30:37
+ * @Description: 
+ */
 import { CanActivate, ExecutionContext, UnauthorizedException, Injectable } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { JwtService } from "@nestjs/jwt";
@@ -15,10 +21,12 @@ export class AuthGuard implements CanActivate {
       // 💡 See this condition
       return true;
     }
-
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
     if (!token) {
+      throw new UnauthorizedException();
+    }
+    if (!request.session || !request.session.userId) {
       throw new UnauthorizedException();
     }
     try {
