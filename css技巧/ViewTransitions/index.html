@@ -1,0 +1,83 @@
+<!--
+ * @Date: 2025-01-07 16:05:36
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2025-01-07 16:34:29
+ * @Description: 
+-->
+<!--
+ * @Date: 2025-01-07 16:05:36
+ * @LastEditors: xiaolong.su@bst.ai
+ * @LastEditTime: 2025-01-07 16:25:53
+ * @Description: 
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        gap: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+
+    li {
+        gap: 1px;
+        --c: 5;
+        flex-basis: calc(100% / var(--c) - 50px);
+        min-width: 100px;
+        /* margin: 5px; */
+        border: 1px solid #ccc;
+        padding: 20px;
+        text-align: center;
+        font-size: 24px;
+        cursor: pointer;
+        background-color: blue;
+        color: white;
+        view-transition-name: var(--i);
+    }
+
+    ::view-transition-old(root),
+    /* 旧视图*/
+    ::view-transition-new(root) {
+        /* 新视图*/
+        animation-duration: 0.1s;
+    }
+</style>
+
+<body>
+    <ul class="list">
+        <li class="item" style="--i:a1">1</li>
+        <li class="item" style="--i:a2">2</li>
+        <li class="item" style="--i:a3">3</li>
+        <li class="item" style="--i:a4">4</li>
+        <li class="item" style="--i:a5">5</li>
+        <li class="item" style="--i:a6">6</li>
+        <li class="item" style="--i:a7">7</li>
+        <li class="item" style="--i:a8">8</li>
+        <li class="item" style="--i:a9">9</li>
+        <li class="item" style="--i:a0">0</li>
+    </ul>
+</body>
+<script>
+    const list = document.querySelector('.list')
+    list.addEventListener('click', (e) => {
+        if (document.startViewTransition) { // 如果支持就视图变换
+            document.startViewTransition(() => { // 开始视图变换
+                e.target.remove()
+            });
+        } else { // 不支持就执行原来的逻辑
+            e.target.remove()
+        }
+    })
+</script>
+
+</html>
