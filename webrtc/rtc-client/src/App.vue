@@ -1,7 +1,7 @@
 <!--
  * @Date: 2025-01-09 17:47:43
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2025-01-13 14:13:18
+ * @LastEditTime: 2025-01-13 18:13:23
  * @Description: 
 -->
 <template>
@@ -58,7 +58,9 @@ const getLocalVideoStream = async () => {
     });
 };
 onMounted(() => {
-  socket.value = io( import.meta.env.MODE === 'production' ? '/api' : "http://localhost:3000");
+  const api = import.meta.env.MODE === 'production' ? 'https://babysyl.top' : "http://localhost:3000"
+  socket.value = io(api);
+  console.log(api, `<===================api2`)
   socket.value.on("connectionSuccess", (_roomId: string) => {
     console.log("连接成功");
     roomId.value = _roomId;

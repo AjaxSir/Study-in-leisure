@@ -1,5 +1,5 @@
 # 使用 Node.js 构建 Vue 项目
-FROM node:16 AS builder
+FROM node:20 AS builder
 WORKDIR /app
 COPY . .
 RUN npm install && npm run build

@@ -22,6 +22,6 @@ rProfiling/*
 .env
 **/migrations/*
 /dist
-
+!/webrtc/**/dist
 log/*
 images/

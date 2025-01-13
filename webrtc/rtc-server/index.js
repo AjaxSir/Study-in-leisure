@@ -1,16 +1,16 @@
 /*
  * @Date: 2025-01-09 17:49:21
  * @LastEditors: xiaolong.su@bst.ai
- * @LastEditTime: 2025-01-13 14:06:07
+ * @LastEditTime: 2025-01-13 18:15:05
  * @Description: 
  */
 import  { Server } from 'socket.io'
 import * as http from 'http'
-
+import * as fs from 'fs'
 const server = http.createServer()
 
 const io = new Server(server, {
-   cors: {
+    cors: {
     origin: "*",
     maxAge: 1000 * 24 * 60 * 60
    }
