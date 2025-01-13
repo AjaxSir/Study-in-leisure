@@ -21,7 +21,7 @@ const socket = ref();
 const localVideoStream = ref<HTMLVideoElement | null>(null);
 const remoteVideoStream = ref<HTMLVideoElement | null>(null);
 const caller = ref(false);
-const called = ref(false);
+const called = ref(false)
 const roomId = ref<string>("");
 const isCalling = ref(false); // 是否在呼叫中
 const stream = ref<MediaStream | null>();
@@ -47,7 +47,7 @@ const handleDown = () => {
 };
 const getLocalVideoStream = async () => {
  await navigator.mediaDevices
-    .getUserMedia({ video: false, audio: true })
+    .getUserMedia({ video: true, audio: true })
     .then((_stream) => {
       localVideoStream.value!.srcObject = _stream;
       localVideoStream.value?.play();
