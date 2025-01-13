@@ -1,0 +1,31 @@
+@use 'sass:map'; 
+@use 'sass:list'; // 引入 sass:list 模块
+$breakPoints: (
+    phone: (320px, 480px),
+    pad: (481px, 768px),
+    notebook: (769px, 1024px),
+    desktop: (1025px, 1200px),
+    tv: 1201px
+);
+
+@mixin responseTo($dname) {
+    $dp: map.get($breakPoints, $dname); // 使用 map.get 获取设备范围
+
+    @if $dp != null { // 确保获取到的值不是 null
+        @warn "Device range for #{$dname}: #{$dp}";
+
+        // 判断 $dp 是否是一个有效的列表，并且包含两个值
+        @if list.length($dp) == 2 {
+            @media (min-width: list.nth($dp, 1)) and (max-width: list.nth($dp, 2)) {
+                @content;
+            }
+        } @else {
+            // 如果 $dp 只有一个值，表示是最小宽度，适用于桌面设备
+            @media (min-width: list.nth($dp, 1)) {
+                @content;
+            }
+        }
+    } @else {
+        @warn "No matching device found for #{$dname}.";
+    }
+}
