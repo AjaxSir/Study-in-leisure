@@ -11,7 +11,7 @@ import { createPinia } from 'pinia'
 import persist from './store/pinia/persist'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-import App from './nest/index.vue'
+import App from './App.vue'
 import "vue-global-api"
 const pinia = createPinia()
 pinia.use(persist)

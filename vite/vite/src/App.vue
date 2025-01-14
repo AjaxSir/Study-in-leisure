@@ -7,10 +7,11 @@
 <script setup lang="ts">
 // import HelloWorld from "./components/HelloWorld.vue";
 // import Responsive from './components/Responsive.vue'
-// import ClipPath from './components/clipPath.vue';
+import ClipPath from './components/clipPath.vue';
+import KuRuMi from './components/kurumi.vue';
 // import AnimateSvg from './components/animateSvg.vue';
  // import ProgressiveImg from './components/ProgressiveImage.vue';
- import Defer from './components/defer.vue'
+//  import Defer from './components/defer.vue'
 import { ref } from 'vue'
 import  useStore from './store/pinia'
 const { counterStore } = useStore()
@@ -26,7 +27,7 @@ const value = ref(0)
   <!-- <ClipPath /> -->
   <!-- <AnimateSvg /> -->
   <!-- <ProgressiveImg /> -->
-  <Defer />
+  <KuRuMi />
   <!-- vuex -->
     <!-- <span>{{ store.state.counter.counter }}</span> -->
   <!-- <button @click="value+= 1">incres</button> -->
